@@ -1,0 +1,28 @@
+Poker Game Goals:
+
+1. playable between 2 - 10 people (no cpu)
+2. Invite based
+2. Web based UI
+3. Socket based (with Simple JSON object representing board)
+4. Engine (Java based) must calculate:
+	a. winning hand or ties
+	b. able to distinguish best hands (possible hash of hands best to worst)
+	c. able to log player hands, flop, turn, river
+	d. shuffling
+
+5. Monitor betting, chip count
+
+
+
+Steps:
+
+1. define db entities
+2. define application entities (player, card, deck...)
+2. work on engine
+	1. shuffling engine
+	2. hands evaluation engine
+	4. player turn engine
+	5. player timing engine
+	6. betting engine
+3. work on socket (define single object coming in and going out)
+4. work on UI (simple) AngularJS
