@@ -13,7 +13,7 @@ import java.io.Serializable;
  *
  * @author Mac
  */
-public interface Card extends Printable, Serializable {
+public interface Card extends Printable, Serializable, Comparable<Card> {
     
     public Suit getSuit();
 
@@ -22,4 +22,8 @@ public interface Card extends Printable, Serializable {
     public boolean isIsBurned();
     
     public void reset();
+    
+    public boolean isSameSuit(Card card);
+    
+    public boolean isSameFaceValue(Card card);
 }

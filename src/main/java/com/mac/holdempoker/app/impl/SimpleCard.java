@@ -73,4 +73,19 @@ public class SimpleCard implements Card {
     public String print() {
         return (Objects.nonNull(suit) && Objects.nonNull(value)) ? suit.initial() + ":" + value.value() : ":";
     }
+
+    @Override
+    public int compareTo(Card o) {
+        return this.value.rank() - o.getValue().rank();
+    }
+
+    @Override
+    public boolean isSameSuit(Card card) {
+        return this.getSuit() == card.getSuit();
+    }
+
+    @Override
+    public boolean isSameFaceValue(Card card) {
+        return this.getValue() == card.getValue();
+    }
 }

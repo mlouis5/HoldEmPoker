@@ -3,13 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.app;
+package com.mac.holdempoker.app.impl.util;
+
+import com.mac.holdempoker.app.Hand;
 
 /**
  *
- * @author Mac
+ * @author MacDerson
  */
-public interface Chip {
+public class HandEvaluator {
     
-    int getChipAmount();
+    public int valueHighCard(Hand hand){
+        
+    }
 }
