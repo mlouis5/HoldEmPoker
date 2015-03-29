@@ -14,6 +14,6 @@ import com.mac.holdempoker.app.Hand;
 public class HandEvaluator {
     
     public int valueHighCard(Hand hand){
-        
+        return 0;
     }
 }

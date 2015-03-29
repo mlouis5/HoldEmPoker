@@ -76,7 +76,7 @@ public class SimpleHand implements Hand{
 
     @Override
     public boolean isStraight() {
-        
+        return false;
     }
     
 }
