@@ -5,11 +5,13 @@
  */
 package com.mac.holdempoker.app;
 
+import com.mac.holdempoker.app.util.Observable;
+
 /**
  *
  * @author Mac
  */
-public interface Community {
+public interface Community extends Observable{
 
     Card[] getFlop();
 

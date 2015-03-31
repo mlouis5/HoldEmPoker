@@ -8,9 +8,13 @@ package com.mac.holdempoker.app.impl;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Community;
 import com.mac.holdempoker.app.Hand;
-import com.mac.holdempoker.app.enums.HandRank;
-import com.mac.holdempoker.app.enums.Suit;
+import com.mac.holdempoker.app.enums.Rank;
+import com.mac.holdempoker.app.impl.util.Histogram;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -49,34 +53,30 @@ public class SimpleHand implements Hand{
     public int compare(Card o1, Card o2) {
         return o1.compareTo(o2);
     }
+    
+    @Override
+    public void setCommunityCards(Community communityCards) {
+        this.community = communityCards;
+    }
 
     @Override
     public void sortHand() {
         Arrays.sort(hand, this);
     }
-
-    @Override
-    public boolean isFlush() {
-       Suit[] suits = Suit.values();
-       for(Suit suit : suits){
-           int totalValue = suit.suitValue() * 5;           
-           for(int i = 0; i < 7 && i < hand.length; i++){
-               int bestValue = 0;
-               for(int j = 0; j < 5 && j < hand.length; j++){
-                   Card card = hand[j];
-                   bestValue += card.getSuit().suitValue();
-               }
-               if(bestValue == totalValue){
-                   return true;
-               }
-           }
-       }
-       return false;
-    }
-
-    @Override
-    public boolean isStraight() {
-        return false;
+    
+    private Card[] getAllCards(Community community, Card[] hand){
+        return ArrayUtils.addAll(community.getCommunityCards(), hand);
     }
     
+    private Histogram getHistogram(Card[] allCards){
+        Map<Rank, Integer> histogram = new HashMap();
+        
+        Histogram histo = new Histogram();
+        for(Card card : allCards){
+            histo.addToRankCount(card.getRank(), 1);
+            histo.addToSuitCount(card.getSuit(), 1);
+        }
+        return histo;
+    }
+
 }

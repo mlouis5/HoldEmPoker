@@ -7,6 +7,7 @@ package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Community;
+import com.mac.holdempoker.app.util.CommunityObserver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,6 +68,16 @@ public class CommunityImpl implements Community {
         community.add(turn);
         community.add(river);
         return community.toArray(new Card[5]);
+    }
+
+    @Override
+    public void add(CommunityObserver observer) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void notifyObservers() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

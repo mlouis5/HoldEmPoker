@@ -7,7 +7,7 @@ package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Deck;
-import com.mac.holdempoker.app.enums.FaceValue;
+import com.mac.holdempoker.app.enums.Rank;
 import com.mac.holdempoker.app.enums.Suit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,11 +74,11 @@ public class SimpleDeck implements Deck {
     @Override
     public final void validateDeck() {
         Suit[] suits = Suit.values();
-        FaceValue[] values = FaceValue.values();
+        Rank[] values = Rank.values();
         
         deck.clear();
         for(Suit suit : suits){
-            for(FaceValue fv : values){
+            for(Rank fv : values){
                 Card card = new SimpleCard(suit, fv);
                 deck.add(card);
             }

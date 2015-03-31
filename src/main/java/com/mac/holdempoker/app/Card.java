@@ -5,7 +5,7 @@
  */
 package com.mac.holdempoker.app;
 
-import com.mac.holdempoker.app.enums.FaceValue;
+import com.mac.holdempoker.app.enums.Rank;
 import com.mac.holdempoker.app.enums.Suit;
 import java.io.Serializable;
 
@@ -17,7 +17,7 @@ public interface Card extends Printable, Serializable, Comparable<Card> {
     
     public Suit getSuit();
 
-    public FaceValue getValue();
+    public Rank getRank();
 
     public boolean isIsBurned();
     

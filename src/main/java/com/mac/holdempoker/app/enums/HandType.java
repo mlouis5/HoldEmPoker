@@ -9,7 +9,7 @@ package com.mac.holdempoker.app.enums;
  *
  * @author MacDerson
  */
-public enum HandRank {
+public enum HandType {
     ROYAL_FLUSH(HandValue.INDETERMINATE), STRAIGHT_FLUSH(HandValue.DETERMINATE),
     FOUR_OF_A_KIND(HandValue.DETERMINATE), FULL_HOUSE(HandValue.DETERMINATE),
     FLUSH(HandValue.DETERMINATE), STRAIGHT(HandValue.DETERMINATE),
@@ -17,7 +17,7 @@ public enum HandRank {
     PAIR(HandValue.DETERMINATE), HIGH(HandValue.DETERMINATE);
     
     private HandValue handValue;
-    HandRank(HandValue handValue){
+    HandType(HandValue handValue){
         this.handValue = handValue;
     }
     

@@ -5,7 +5,6 @@
  */
 package com.mac.holdempoker.app;
 
-import com.mac.holdempoker.app.enums.HandRank;
 import java.util.Comparator;
 
 /**
@@ -16,11 +15,9 @@ public interface Hand extends Comparator<Card>{
     
     Card[] getHand();
     
+    void setCommunityCards(Community communityCards);
+    
     void addToHand(Card card);
     
     void sortHand();
-    
-    boolean isFlush();
-    
-    boolean isStraight();
 }

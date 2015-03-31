@@ -6,7 +6,7 @@
 package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Card;
-import com.mac.holdempoker.app.enums.FaceValue;
+import com.mac.holdempoker.app.enums.Rank;
 import com.mac.holdempoker.app.enums.Suit;
 import java.util.Objects;
 
@@ -17,10 +17,10 @@ import java.util.Objects;
 public class SimpleCard implements Card {
 
     private final Suit suit;
-    private final FaceValue value;
+    private final Rank value;
     private boolean isBurned;
 
-    public SimpleCard(Suit suit, FaceValue value) {
+    public SimpleCard(Suit suit, Rank value) {
         this.suit = suit;
         this.value = value;
     }
@@ -31,7 +31,7 @@ public class SimpleCard implements Card {
     }
 
     @Override
-    public FaceValue getValue() {
+    public Rank getRank() {
         return value;
     }
 
@@ -71,12 +71,12 @@ public class SimpleCard implements Card {
 
     @Override
     public String print() {
-        return (Objects.nonNull(suit) && Objects.nonNull(value)) ? suit.initial() + ":" + value.value() : ":";
+        return (Objects.nonNull(suit) && Objects.nonNull(value)) ? suit.initial() + ":" + value.rank() : ":";
     }
 
     @Override
     public int compareTo(Card o) {
-        return this.value.rank() - o.getValue().rank();
+        return this.value.value() - o.getRank().value();
     }
 
     @Override
@@ -86,6 +86,11 @@ public class SimpleCard implements Card {
 
     @Override
     public boolean isSameFaceValue(Card card) {
-        return this.getValue() == card.getValue();
+        return this.getRank() == card.getRank();
+    }
+    
+    @Override
+    public String toString(){
+        return print();
     }
 }
