@@ -5,6 +5,8 @@
  */
 package com.mac.holdempoker.app.impl.util;
 
+import com.mac.holdempoker.app.Card;
+import com.mac.holdempoker.app.Histogram;
 import com.mac.holdempoker.app.enums.Rank;
 import com.mac.holdempoker.app.enums.Suit;
 import java.util.HashMap;
@@ -15,16 +17,17 @@ import java.util.Objects;
  *
  * @author Mac
  */
-public class Histogram {
+public class Histo implements Histogram {
 
     private Map<Rank, Integer> rankHistogram;
     private Map<Suit, Integer> suitHistogram;
 
-    public Histogram() {
+    public Histo() {
         this.rankHistogram = new HashMap();
         this.suitHistogram = new HashMap();
     }
 
+    
     public void addToRankCount(Rank rank, int num) {
         Integer number = this.rankHistogram.get(rank);
         if (Objects.nonNull(number)) {
@@ -163,6 +166,11 @@ public class Histogram {
             }
         }
         return highestPair;
+    }
+
+    @Override
+    public void haveCard(Card card) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

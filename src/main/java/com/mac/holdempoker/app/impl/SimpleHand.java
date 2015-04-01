@@ -8,12 +8,7 @@ package com.mac.holdempoker.app.impl;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Community;
 import com.mac.holdempoker.app.Hand;
-import com.mac.holdempoker.app.enums.Rank;
-import com.mac.holdempoker.app.impl.util.Histogram;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -66,17 +61,6 @@ public class SimpleHand implements Hand{
     
     private Card[] getAllCards(Community community, Card[] hand){
         return ArrayUtils.addAll(community.getCommunityCards(), hand);
-    }
-    
-    private Histogram getHistogram(Card[] allCards){
-        Map<Rank, Integer> histogram = new HashMap();
-        
-        Histogram histo = new Histogram();
-        for(Card card : allCards){
-            histo.addToRankCount(card.getRank(), 1);
-            histo.addToSuitCount(card.getSuit(), 1);
-        }
-        return histo;
     }
 
 }
