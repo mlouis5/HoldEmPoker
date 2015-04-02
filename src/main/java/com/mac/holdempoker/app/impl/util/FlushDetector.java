@@ -10,7 +10,6 @@ import com.mac.holdempoker.app.enums.Suit;
 import com.mac.holdempoker.app.util.HandDistributor;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ import java.util.function.Consumer;
  *
  * @author Mac
  */
-public class FlushDetector implements Consumer<Card>, HandDistributor, Comparator<Card> {
+public class FlushDetector implements Consumer<Card>, HandDistributor {
 
     private final Map<Suit, List<Card>> hand;
     
@@ -45,24 +44,17 @@ public class FlushDetector implements Consumer<Card>, HandDistributor, Comparato
 
     @Override
     public Card[] getHand() {
-        Card highestCard = null;
         List<Card> all = new ArrayList(5);
         hand.entrySet().stream().map((entry) -> 
                 entry.getValue()).filter((list) -> 
                         (list.size() >= 5)).forEach((list) -> {
             all.addAll(list);
         });
-        all.add(highestCard);
         Collections.sort(all, this);
         while (all.size() > 5) {
             all.remove(0);
         }
         return all.size() == 5 ? all.toArray(new Card[5]) : new Card[0];
-    }
-
-    @Override
-    public int compare(Card o1, Card o2) {
-        return o1.compareTo(o2);
     }
     
 }

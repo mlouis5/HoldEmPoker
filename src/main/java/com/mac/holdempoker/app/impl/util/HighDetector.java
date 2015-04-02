@@ -18,23 +18,23 @@ import java.util.function.Consumer;
 
 /**
  *
- * @author Mac
+ * @author MacDerson
  */
-public class QuadDetector implements Consumer<Card>, HandDistributor {
+public class HighDetector implements Consumer<Card>, HandDistributor {
 
-    private Map<Rank, List<Card>> hand;
-    
-    public QuadDetector(){
+    private final Map<Rank, List<Card>> hand;
+
+    public HighDetector() {
         hand = new HashMap();
     }
-    
+
     @Override
     public void accept(Card card) {
-        if(Objects.nonNull(card)){
+        if (Objects.nonNull(card)) {
             List<Card> cards = hand.get(card.getRank());
-            if(Objects.nonNull(cards)){
+            if (Objects.nonNull(cards)) {
                 cards.add(card);
-            }else{
+            } else {
                 cards = new ArrayList();
                 cards.add(card);
                 hand.put(card.getRank(), cards);
@@ -44,25 +44,18 @@ public class QuadDetector implements Consumer<Card>, HandDistributor {
 
     @Override
     public Card[] getHand() {
-        Card highestCard = null;
         List<Card> all = new ArrayList(5);
-        for(Map.Entry<Rank, List<Card>> entry : hand.entrySet()){
+        for (Map.Entry<Rank, List<Card>> entry : hand.entrySet()) {
             List<Card> list = entry.getValue();
-            if(list.size() == 1){
-                if(Objects.isNull(highestCard)){
-                    highestCard = list.get(0);
-                }else{
-                    if(entry.getKey().value() > highestCard.getRank().value()){
-                        highestCard = list.get(0);
-                    }
-                }
-            }else if(list.size() == 4){
+            if (list.size() == 1) {
                 all.addAll(list);
             }
         }
-        all.add(highestCard);
         Collections.sort(all, this);
+        while (all.size() > 5) {
+            all.remove(0);
+        }
         return all.size() == 5 ? all.toArray(new Card[5]) : new Card[0];
     }
-    
+
 }
