@@ -6,24 +6,15 @@
 package com.mac.holdempoker.app;
 
 import com.mac.holdempoker.app.enums.HandType;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Objects;
 
 /**
  *
  * @author Mac
  */
-public interface HandRank extends Comparator<Card> {
+public interface HandRank {
     
     HandType getHandType();
     
     Card[] getHand();
     
-    boolean isValid();
-    
-    public default boolean isValidDeal(Collection hand, Card... card){
-        return hand.size() < 7 && Objects.nonNull(card) && card.length >= 1 && card.length <= 3
-                && (hand.size() + card.length <= 7);
-    }
 }

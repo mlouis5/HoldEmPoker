@@ -18,9 +18,9 @@ import static org.junit.Assert.*;
  *
  * @author Mac
  */
-public class HighTest {
+public class BoatTest {
     
-    public HighTest() {
+    public BoatTest() {
     }
     
     @BeforeClass
@@ -40,12 +40,12 @@ public class HighTest {
     }
 
     /**
-     * Test of getHandType method, of class High.
+     * Test of getHandType method, of class Boat.
      */
     @Test
     public void testGetHandType() {
         System.out.println("getHandType");
-        High instance = new High();
+        Boat instance = new Boat();
         HandType expResult = null;
         HandType result = instance.getHandType();
         assertEquals(expResult, result);
@@ -54,51 +54,51 @@ public class HighTest {
     }
 
     /**
-     * Test of dealt method, of class High.
+     * Test of dealt method, of class Boat.
      */
     @Test
     public void testDealt() {
         System.out.println("dealt");
         Card[] cards = null;
-        High instance = new High();
+        Boat instance = new Boat();
         instance.dealt(cards);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of haveCard method, of class High.
+     * Test of haveCard method, of class Boat.
      */
     @Test
     public void testHaveCard() {
         System.out.println("haveCard");
         Card card = null;
-        High instance = new High();
+        Boat instance = new Boat();
         instance.haveCard(card);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of accept method, of class High.
+     * Test of accept method, of class Boat.
      */
     @Test
     public void testAccept() {
         System.out.println("accept");
         Card card = null;
-        High instance = new High();
+        Boat instance = new Boat();
         instance.accept(card);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getHand method, of class High.
+     * Test of getHand method, of class Boat.
      */
     @Test
     public void testGetHand() {
         System.out.println("getHand");
-        High instance = new High();
+        Boat instance = new Boat();
         Card[] expResult = null;
         Card[] result = instance.getHand();
         assertArrayEquals(expResult, result);

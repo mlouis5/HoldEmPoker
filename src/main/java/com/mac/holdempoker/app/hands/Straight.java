@@ -8,157 +8,91 @@ package com.mac.holdempoker.app.hands;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.HandRank;
 import com.mac.holdempoker.app.enums.HandType;
-import com.mac.holdempoker.app.enums.Rank;
-import com.mac.holdempoker.app.enums.Suit;
-import com.mac.holdempoker.app.impl.SimpleCard;
 import com.mac.holdempoker.app.util.CommunityObserver;
+import com.mac.holdempoker.app.util.HandDistributor;
 import com.mac.holdempoker.app.util.PlayerObserver;
-import java.util.Arrays;
-import java.util.TreeSet;
-import org.apache.commons.lang3.ArrayUtils;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  *
  * @author Mac
  */
-public class Straight implements HandRank, CommunityObserver, PlayerObserver  {
+public class Straight implements Consumer<Card>, HandDistributor,
+        HandRank, CommunityObserver, PlayerObserver {
 
-    private final TreeSet<Card> hand;
-    
-    private int highIndex;
-    private int lowIndex;
-    private boolean isWheel;
+    private final List<Card> hand;
 
     public Straight() {
-        hand = new TreeSet(this);
-        highIndex = -1;
-        lowIndex = -1;
-        isWheel = false;
+        hand = new ArrayList(7);
     }
-    
+
+    @Override
+    public void accept(Card card) {
+        if (Objects.nonNull(card)) {
+            hand.add(card);
+        }
+    }
+
     @Override
     public HandType getHandType() {
         return HandType.STRAIGHT;
     }
 
     @Override
-    public Card[] getHand() {
-        if(!isValid()){
-            return new Card[0];
-        }
-        return ArrayUtils.subarray(hand.toArray(new Card[hand.size()]), lowIndex + 1, highIndex + 1);
-    }
-
-    @Override
-    public boolean isValid() {
-        return isConsecutive() && hand.size() >= 5;
-    }
-
-    @Override
-    public int compare(Card o1, Card o2) {
-        return o1.compareTo(o2);
-    }
-
-    @Override
     public void haveCard(Card card) {
         dealt(card);
     }
-    
+
     @Override
     public void dealt(Card... cards) {
-        if(isValidDeal(hand, cards)){
-            hand.addAll(Arrays.asList(cards));
+        for(Card card : cards){
+            accept(card);
         }
     }
-    
-    public boolean isConsecutive(){
-        Card[] cards = hand.toArray(new Card[hand.size()]);
-        int i,j;
-        boolean isCons = false;
-        
-        int diff = 1;
-        for(i = cards.length - 1, j = i - 1; i >= 0 && j >= 0;){
-            isCons = (cards[i].getRank().value() - cards[j].getRank().value() == diff);
-            
-            if(isCons){                
-                highIndex = i;
-                lowIndex = j >= 0 ? j : 0;
-                j--;
-                if(highIndex - lowIndex == 5){
-                    break;
-                }                
-            }else{
-                i--;
-                j = i - 1;                
+
+    @Override
+    public Card[] getHand() {
+        Collections.sort(hand, this);
+        int i;
+        List<Card> finalList = new ArrayList(5);
+        Card lastCard = null;
+        for (i = hand.size() - 1; i >= 0; i--) {
+            Card c = hand.get(i);
+            if (Objects.isNull(lastCard)) {
+                finalList.add(c);
+                lastCard = c;
+            } else {
+                if (lastCard.getRank().value() - c.getRank().value() == 1) {
+                    finalList.add(c);
+                    lastCard = c;
+                } else {
+                    finalList.clear();
+                    lastCard = null;
+                    i++;
+                }
             }
-            diff++;
-        }
-        isWheel = false;
-        return highIndex - lowIndex == 5;
-    }
-    
-    private boolean isWheel(){
-        Card[] cards = hand.toArray(new Card[hand.size()]);
-        int i,j;
-        boolean isCons = false;
-        
-        int diff = 1;
-        for(i = 0, j = i + 1; i < 4 && j < 4;){
-            isCons = (cards[j].getRank().value() - cards[i].getRank().value() == diff);
-            
-            if(isCons){                
-                highIndex = j;
-                lowIndex = i;
-                j++;
-                if(highIndex - lowIndex == 4){
-                    break;
-                }                
-            }else{
-                i++;
-                j = i + 1;                
+            if (c.getRank().value() == 2) {
+                break;
             }
-            diff++;
         }
-        if(cards[cards.length - 1].getRank() == Rank.ACE){
-            isWheel = true;
-            highIndex = cards.length - 1;
+        Collections.sort(finalList, this);
+        while(finalList.size() > 5){
+            finalList.remove(0);
         }
-        return isWheel;
+        int size = finalList.size();
+        if (size == 4 && ((finalList.get(size - 1).getRank().value()) == 5 && (finalList.get(0).getRank().value()) == 2)) {
+            if (hand.get(hand.size() - 1).getRank().value() == 14) {
+                finalList.add(hand.get(hand.size() - 1));
+                return finalList.toArray(new Card[5]);
+            }
+        } else if (size == 5) {
+            return finalList.toArray(new Card[5]);
+        }
+        return new Card[0];
     }
-    
-    public static void main(String[] args){
-        Straight h = new Straight();
-        
-        Card[] cards = {new SimpleCard(Suit.CLUB, Rank.ACE), new SimpleCard(Suit.HEART, Rank.JACK)
-        , new SimpleCard(Suit.SPADE, Rank.TEN)};       
-        
-        h.dealt(cards);
-        
-        cards = new Card[1];
-        cards[0] = new SimpleCard(Suit.CLUB, Rank.KING);
-        
-        h.dealt(cards);
-        
-        cards = new Card[1];
-        cards[0] = new SimpleCard(Suit.CLUB, Rank.TWO);
-        
-        cards = new Card[1];
-        cards[0] = new SimpleCard(Suit.DIAMOND, Rank.NINE);
-        
-        h.dealt(cards);
-        
-        cards = new Card[1];
-        cards[0] = new SimpleCard(Suit.DIAMOND, Rank.QUEEN);
-        
-        h.dealt(cards);
-        
-        Card[] allCards = h.getHand();
-        
-        for(Card c : allCards){
-            System.out.println(c.print());
-        }
-        
-        System.out.println(Arrays.toString(h.getHand()));
-    }
-    
+
 }

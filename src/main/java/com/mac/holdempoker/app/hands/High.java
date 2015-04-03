@@ -9,98 +9,75 @@ import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.HandRank;
 import com.mac.holdempoker.app.enums.HandType;
 import com.mac.holdempoker.app.enums.Rank;
-import com.mac.holdempoker.app.enums.Suit;
-import com.mac.holdempoker.app.impl.SimpleCard;
 import com.mac.holdempoker.app.util.CommunityObserver;
+import com.mac.holdempoker.app.util.HandDistributor;
 import com.mac.holdempoker.app.util.PlayerObserver;
-import java.util.Arrays;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  *
- * @author Mac
+ * @author MacDerson
  */
-public class High implements HandRank, CommunityObserver, PlayerObserver {
+public class High implements Consumer<Card>, HandDistributor, 
+        HandRank, CommunityObserver, PlayerObserver {
 
-    private final TreeSet<Card> hand;
+    private final Map<Rank, List<Card>> hand;
 
     public High() {
-        hand = new TreeSet(this);
+        hand = new HashMap();
     }
-
+    
     @Override
     public HandType getHandType() {
         return HandType.HIGH;
     }
 
     @Override
-    public Card[] getHand() {
-        if(hand.size() < 5){
-            return new Card[0];
-        }        
-        if(hand.size() > 5){
-            while(hand.size() > 5){
-                hand.pollFirst();
-            }
+    public void dealt(Card... cards) {
+        for(Card card : cards){
+            accept(card);
         }
-        return hand.toArray(new Card[5]);
     }
 
-    @Override
-    public boolean isValid() {
-        return this.hand.size() >= 5 && this.hand.size() <= 7;
-    }
-    
     @Override
     public void haveCard(Card card) {
         dealt(card);
     }
-    
+
     @Override
-    public void dealt(Card... cards) {
-        if(isValidDeal(hand, cards)){
-            hand.addAll(Arrays.asList(cards));
+    public void accept(Card card) {
+        if (Objects.nonNull(card)) {
+            List<Card> cards = hand.get(card.getRank());
+            if (Objects.nonNull(cards)) {
+                cards.add(card);
+            } else {
+                cards = new ArrayList();
+                cards.add(card);
+                hand.put(card.getRank(), cards);
+            }
         }
     }
 
     @Override
-    public int compare(Card o1, Card o2) {
-        return o1.compareTo(o2);
-    }
-    
-    public static void main(String[] args){
-        High h = new High();
-        
-        Card[] cards = {new SimpleCard(Suit.CLUB, Rank.ACE), new SimpleCard(Suit.HEART, Rank.EIGHT)
-        , new SimpleCard(Suit.SPADE, Rank.FIVE)};       
-        
-        h.dealt(cards);
-        
-        cards = new Card[1];
-        cards[0] = new SimpleCard(Suit.CLUB, Rank.KING);
-        
-        h.dealt(cards);
-        
-        cards = new Card[1];
-        cards[0] = new SimpleCard(Suit.CLUB, Rank.TWO);
-        
-        cards = new Card[1];
-        cards[0] = new SimpleCard(Suit.DIAMOND, Rank.NINE);
-        
-        h.dealt(cards);
-        
-        cards = new Card[1];
-        cards[0] = new SimpleCard(Suit.DIAMOND, Rank.QUEEN);
-        
-        h.dealt(cards);
-        
-        Card[] allCards = h.getHand();
-        
-        for(Card c : allCards){
-            System.out.println(c.print());
+    public Card[] getHand() {
+        List<Card> all = new ArrayList(5);
+        for (Map.Entry<Rank, List<Card>> entry : hand.entrySet()) {
+            List<Card> list = entry.getValue();
+            if (list.size() == 1) {
+                all.addAll(list);
+            }
         }
-        
-        System.out.println(Arrays.toString(h.getHand()));
+        Collections.sort(all, this);
+        while (all.size() > 5) {
+            all.remove(0);
+        }
+        return all.size() == 5 ? all.toArray(new Card[5]) : new Card[0];
     }
 
 }
