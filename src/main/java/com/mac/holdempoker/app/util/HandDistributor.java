@@ -16,6 +16,8 @@ public interface HandDistributor extends Comparator<Card>{
     
     Card[] getHand();
     
+    void clearHand();
+    
     @Override
     public default int compare(Card o1, Card o2) {
         return o1.compareTo(o2);

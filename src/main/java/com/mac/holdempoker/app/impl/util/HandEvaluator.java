@@ -13,7 +13,7 @@ import com.mac.holdempoker.app.Hand;
  */
 public class HandEvaluator {
     
-    public int valueHighCard(Hand hand){
+    public long valueHand(Hand hand){
         return 0;
     }
 }

@@ -63,7 +63,6 @@ public class Quads implements Consumer<Card>, HandDistributor,
                         highestCard = list.get(0);
                     }
                 }
-                System.out.println("highestCard: " + highestCard);
             }else if(list.size() == 4){
                 all.addAll(list);
             }
@@ -90,4 +89,8 @@ public class Quads implements Consumer<Card>, HandDistributor,
         }
     }
     
+    @Override
+    public void clearHand() {
+        hand.clear();
+    }
 }

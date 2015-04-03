@@ -95,4 +95,8 @@ public class Straight implements Consumer<Card>, HandDistributor,
         return new Card[0];
     }
 
+    @Override
+    public void clearHand() {
+        hand.clear();
+    }
 }

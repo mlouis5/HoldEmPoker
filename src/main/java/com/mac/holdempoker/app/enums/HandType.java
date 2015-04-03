@@ -10,22 +10,20 @@ package com.mac.holdempoker.app.enums;
  * @author MacDerson
  */
 public enum HandType {
-    ROYAL_FLUSH(HandValue.INDETERMINATE), STRAIGHT_FLUSH(HandValue.DETERMINATE),
-    FOUR_OF_A_KIND(HandValue.DETERMINATE), FULL_HOUSE(HandValue.DETERMINATE),
-    FLUSH(HandValue.DETERMINATE), STRAIGHT(HandValue.DETERMINATE),
-    THREE_OF_A_KIND(HandValue.DETERMINATE), TWO_PAIR(HandValue.DETERMINATE), 
-    PAIR(HandValue.DETERMINATE), HIGH(HandValue.DETERMINATE);
-    
-    private HandValue handValue;
-    HandType(HandValue handValue){
-        this.handValue = handValue;
+
+    ROYAL_FLUSH(Long.MAX_VALUE), STRAIGHT_FLUSH(8000000L),
+    FOUR_OF_A_KIND(7000000L), FULL_HOUSE(6000000L),
+    FLUSH(5000000L), STRAIGHT(4000000L),
+    THREE_OF_A_KIND(3000000L), TWO_PAIR(2000000L),
+    PAIR(1000000L), HIGH(0);
+
+    private final long interValue;
+
+    HandType(long value) {
+        this.interValue = value;
     }
-    
-    public HandValue handValue(){
-        return this.handValue;
-    }
-    
-    public static enum HandValue{
-        DETERMINATE, INDETERMINATE;
+
+    public long getInterValue() {
+        return this.interValue;
     }
 }

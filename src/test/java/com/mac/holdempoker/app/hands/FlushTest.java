@@ -7,12 +7,19 @@ package com.mac.holdempoker.app.hands;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.enums.HandType;
+import com.mac.holdempoker.app.enums.Rank;
+import com.mac.holdempoker.app.enums.Suit;
+import com.mac.holdempoker.app.impl.SimpleCard;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
+import org.springframework.util.Assert;
 
 /**
  *
@@ -20,36 +27,28 @@ import static org.junit.Assert.*;
  */
 public class FlushTest {
     
+    private static Flush instance;
+    
     public FlushTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
+        instance = new Flush();
     }
     
     @Before
     public void setUp() {
+        Card[] AllCards = {new SimpleCard(Suit.CLUB, Rank.ACE), 
+        new SimpleCard(Suit.CLUB, Rank.EIGHT), new SimpleCard(Suit.CLUB, Rank.TWO),
+        new SimpleCard(Suit.CLUB, Rank.JACK), new SimpleCard(Suit.SPADE, Rank.JACK),
+        new SimpleCard(Suit.CLUB, Rank.NINE)};
+        List<Card> cards = Arrays.asList(AllCards);
+        
+        for (Card card : cards) {
+            instance.accept(card);
+        }
     }
     
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of accept method, of class Flush.
-     */
-    @Test
-    public void testAccept() {
-        System.out.println("accept");
-        Card card = null;
-        Flush instance = new Flush();
-        instance.accept(card);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.clearHand();
     }
 
     /**
@@ -57,39 +56,7 @@ public class FlushTest {
      */
     @Test
     public void testGetHandType() {
-        System.out.println("getHandType");
-        Flush instance = new Flush();
-        HandType expResult = null;
-        HandType result = instance.getHandType();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of dealt method, of class Flush.
-     */
-    @Test
-    public void testDealt() {
-        System.out.println("dealt");
-        Card[] cards = null;
-        Flush instance = new Flush();
-        instance.dealt(cards);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of haveCard method, of class Flush.
-     */
-    @Test
-    public void testHaveCard() {
-        System.out.println("haveCard");
-        Card card = null;
-        Flush instance = new Flush();
-        instance.haveCard(card);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(HandType.FLUSH, instance.getHandType());
     }
 
     /**
@@ -97,13 +64,13 @@ public class FlushTest {
      */
     @Test
     public void testGetHand() {
-        System.out.println("getHand");
-        Flush instance = new Flush();
-        Card[] expResult = null;
+        System.out.println(getClass().getSimpleName() + ": getHand");
         Card[] result = instance.getHand();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        System.out.println("test results");
+        System.out.println(Arrays.toString(result));
+        Assert.noNullElements(result);
+        Assert.isTrue(result.length == 5);
     }
     
 }

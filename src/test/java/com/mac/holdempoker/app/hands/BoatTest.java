@@ -7,12 +7,19 @@ package com.mac.holdempoker.app.hands;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.enums.HandType;
+import com.mac.holdempoker.app.enums.Rank;
+import com.mac.holdempoker.app.enums.Suit;
+import com.mac.holdempoker.app.impl.SimpleCard;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
+import org.springframework.util.Assert;
 
 /**
  *
@@ -20,23 +27,28 @@ import static org.junit.Assert.*;
  */
 public class BoatTest {
     
+    private static Boat instance;
+    
     public BoatTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
+        instance = new Boat();
     }
     
     @Before
     public void setUp() {
+        Card[] AllCards = {new SimpleCard(Suit.CLUB, Rank.ACE), 
+        new SimpleCard(Suit.DIAMOND, Rank.ACE), new SimpleCard(Suit.HEART, Rank.ACE),
+        new SimpleCard(Suit.CLUB, Rank.JACK), new SimpleCard(Suit.SPADE, Rank.JACK),
+        new SimpleCard(Suit.CLUB, Rank.NINE)};
+        List<Card> cards = Arrays.asList(AllCards);
+        
+        for (Card card : cards) {
+            instance.accept(card);
+        }
     }
     
     @After
     public void tearDown() {
+        instance.clearHand();
     }
 
     /**
@@ -44,52 +56,7 @@ public class BoatTest {
      */
     @Test
     public void testGetHandType() {
-        System.out.println("getHandType");
-        Boat instance = new Boat();
-        HandType expResult = null;
-        HandType result = instance.getHandType();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of dealt method, of class Boat.
-     */
-    @Test
-    public void testDealt() {
-        System.out.println("dealt");
-        Card[] cards = null;
-        Boat instance = new Boat();
-        instance.dealt(cards);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of haveCard method, of class Boat.
-     */
-    @Test
-    public void testHaveCard() {
-        System.out.println("haveCard");
-        Card card = null;
-        Boat instance = new Boat();
-        instance.haveCard(card);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of accept method, of class Boat.
-     */
-    @Test
-    public void testAccept() {
-        System.out.println("accept");
-        Card card = null;
-        Boat instance = new Boat();
-        instance.accept(card);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(HandType.FULL_HOUSE, instance.getHandType());
     }
 
     /**
@@ -97,13 +64,13 @@ public class BoatTest {
      */
     @Test
     public void testGetHand() {
-        System.out.println("getHand");
-        Boat instance = new Boat();
-        Card[] expResult = null;
+        System.out.println(getClass().getSimpleName() + ": getHand");
         Card[] result = instance.getHand();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        System.out.println("test results");
+        System.out.println(Arrays.toString(result));
+        Assert.noNullElements(result);
+        Assert.isTrue(result.length == 5);
     }
     
 }

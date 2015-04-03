@@ -30,11 +30,6 @@ import org.junit.runners.Suite;
     com.mac.holdempoker.app.hands.TripsTest.class, 
     com.mac.holdempoker.app.hands.HighTest.class})
 public class HandsTestSuite {
-    
-    public static final Card[] cards = {new SimpleCard(Suit.CLUB, Rank.ACE), 
-        new SimpleCard(Suit.CLUB, Rank.KING), new SimpleCard(Suit.CLUB, Rank.QUEEN),
-        new SimpleCard(Suit.CLUB, Rank.JACK), new SimpleCard(Suit.CLUB, Rank.TEN),
-        new SimpleCard(Suit.CLUB, Rank.NINE)};
 
     @Before
     public void setUp() throws Exception {

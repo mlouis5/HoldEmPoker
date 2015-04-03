@@ -7,12 +7,18 @@ package com.mac.holdempoker.app.hands;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.enums.HandType;
+import com.mac.holdempoker.app.enums.Rank;
+import com.mac.holdempoker.app.enums.Suit;
+import com.mac.holdempoker.app.impl.SimpleCard;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.springframework.util.Assert;
 
 /**
  *
@@ -20,23 +26,28 @@ import static org.junit.Assert.*;
  */
 public class PairTest {
     
+    private static Pair instance;
+    
     public PairTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
+        instance = new Pair();
     }
     
     @Before
     public void setUp() {
+        Card[] AllCards = {new SimpleCard(Suit.DIAMOND, Rank.TWO), 
+        new SimpleCard(Suit.HEART, Rank.TWO), new SimpleCard(Suit.SPADE, Rank.TEN),
+        new SimpleCard(Suit.CLUB, Rank.QUEEN), new SimpleCard(Suit.SPADE, Rank.KING),
+        new SimpleCard(Suit.DIAMOND, Rank.FIVE)};
+        List<Card> cards = Arrays.asList(AllCards);
+        
+        for (Card card : cards) {
+            instance.accept(card);
+        }
     }
     
     @After
     public void tearDown() {
+        instance.clearHand();
     }
 
     /**
@@ -44,52 +55,7 @@ public class PairTest {
      */
     @Test
     public void testGetHandType() {
-        System.out.println("getHandType");
-        Pair instance = new Pair();
-        HandType expResult = null;
-        HandType result = instance.getHandType();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of dealt method, of class Pair.
-     */
-    @Test
-    public void testDealt() {
-        System.out.println("dealt");
-        Card[] cards = null;
-        Pair instance = new Pair();
-        instance.dealt(cards);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of haveCard method, of class Pair.
-     */
-    @Test
-    public void testHaveCard() {
-        System.out.println("haveCard");
-        Card card = null;
-        Pair instance = new Pair();
-        instance.haveCard(card);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of accept method, of class Pair.
-     */
-    @Test
-    public void testAccept() {
-        System.out.println("accept");
-        Card card = null;
-        Pair instance = new Pair();
-        instance.accept(card);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(HandType.PAIR, instance.getHandType());
     }
 
     /**
@@ -97,13 +63,13 @@ public class PairTest {
      */
     @Test
     public void testGetHand() {
-        System.out.println("getHand");
-        Pair instance = new Pair();
-        Card[] expResult = null;
+        System.out.println(getClass().getSimpleName() + ": getHand");
         Card[] result = instance.getHand();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        System.out.println("test results");
+        System.out.println(Arrays.toString(result));
+        Assert.noNullElements(result);
+        Assert.isTrue(result.length == 5);
     }
     
 }

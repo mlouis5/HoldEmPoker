@@ -94,4 +94,8 @@ public class Pair implements Consumer<Card>, HandDistributor,
         return all.size() == 5 ? all.toArray(new Card[5]) : new Card[0];
     }
 
+    @Override
+    public void clearHand() {
+        hand.clear();
+    }
 }

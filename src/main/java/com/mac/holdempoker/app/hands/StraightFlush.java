@@ -29,10 +29,10 @@ public class StraightFlush implements Consumer<Card>, HandDistributor,
     public StraightFlush() {
         hand = new ArrayList(7);
     }
-    
+
     @Override
     public void accept(Card card) {
-        if(Objects.nonNull(card)){
+        if (Objects.nonNull(card)) {
             hand.add(card);
         }
     }
@@ -45,16 +45,20 @@ public class StraightFlush implements Consumer<Card>, HandDistributor,
         Card lastCard = null;
         for (i = hand.size() - 1; i >= 0; i--) {
             Card c = hand.get(i);
+            System.out.println("lastCard: " + lastCard + "\t" + "current card: " + c);
             if (Objects.isNull(lastCard)) {
                 finalList.add(c);
                 lastCard = c;
             } else {
-                System.out.println("else: " + lastCard);
-                if (lastCard.getRank().value() - c.getRank().value() == 1 
+                if (lastCard.getRank().value() - c.getRank().value() == 1
                         && lastCard.getSuit() == c.getSuit()) {
                     finalList.add(c);
                     lastCard = c;
                 } else {
+                    if(lastCard.getRank().value() - c.getRank().value() == 1
+                            && lastCard.getSuit() != c.getSuit()){
+                        continue;
+                    }
                     finalList.clear();
                     lastCard = null;
                     i++;
@@ -63,15 +67,13 @@ public class StraightFlush implements Consumer<Card>, HandDistributor,
             if (c.getRank().value() == 2) {
                 break;
             }
-            System.out.println(lastCard);
         }
         Collections.sort(finalList, this);
-        while(finalList.size() > 5){
+        while (finalList.size() > 5) {
             finalList.remove(0);
         }
         int size = finalList.size();
-        System.out.println(finalList);
-        if (size == 4 && ((finalList.get(size - 1).getRank().value()) == 5 
+        if (size == 4 && ((finalList.get(size - 1).getRank().value()) == 5
                 && (finalList.get(0).getRank().value()) == 2)) {
             if (hand.get(hand.size() - 1).getRank().value() == 14) {
                 finalList.add(hand.get(hand.size() - 1));
@@ -90,7 +92,7 @@ public class StraightFlush implements Consumer<Card>, HandDistributor,
 
     @Override
     public void dealt(Card... cards) {
-        for(Card card : cards){
+        for (Card card : cards) {
             accept(card);
         }
     }
@@ -99,5 +101,9 @@ public class StraightFlush implements Consumer<Card>, HandDistributor,
     public void haveCard(Card card) {
         dealt(card);
     }
-    
+
+    @Override
+    public void clearHand() {
+        hand.clear();
+    }
 }

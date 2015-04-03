@@ -38,7 +38,7 @@ public class RoyalFlush implements Consumer<Card>, HandDistributor,
         if(cards.length == 0){
             return cards;
         }
-        if(cards[5].getRank() == Rank.ACE && cards[0].getRank() == Rank.TEN){
+        if(cards[4].getRank() == Rank.ACE && cards[0].getRank() == Rank.TEN){
             return cards;
         }
         return new Card[0];
@@ -61,4 +61,8 @@ public class RoyalFlush implements Consumer<Card>, HandDistributor,
         dealt(card);
     }
     
+    @Override
+    public void clearHand() {
+        sFlush.clearHand();
+    }
 }
