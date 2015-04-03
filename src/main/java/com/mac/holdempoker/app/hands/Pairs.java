@@ -10,7 +10,6 @@ import com.mac.holdempoker.app.HandRank;
 import com.mac.holdempoker.app.enums.HandType;
 import com.mac.holdempoker.app.enums.Rank;
 import com.mac.holdempoker.app.util.CommunityObserver;
-import com.mac.holdempoker.app.util.HandDistributor;
 import com.mac.holdempoker.app.util.PlayerObserver;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,8 +24,7 @@ import org.apache.commons.collections.ListUtils;
  *
  * @author MacDerson
  */
-public class Pairs implements Consumer<Card>, HandDistributor, 
-        HandRank, CommunityObserver, PlayerObserver {
+public class Pairs implements HandRank, CommunityObserver, PlayerObserver {
 
     private final Map<Rank, List<Card>> hand;
 
@@ -119,5 +117,10 @@ public class Pairs implements Consumer<Card>, HandDistributor,
     @Override
     public void clearHand() {
         hand.clear();
+    }
+
+    @Override
+    public boolean isValidHand() {
+        return getHand().length == 5;
     }
 }

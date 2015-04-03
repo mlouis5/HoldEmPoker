@@ -10,7 +10,6 @@ import com.mac.holdempoker.app.HandRank;
 import com.mac.holdempoker.app.enums.HandType;
 import com.mac.holdempoker.app.enums.Rank;
 import com.mac.holdempoker.app.util.CommunityObserver;
-import com.mac.holdempoker.app.util.HandDistributor;
 import com.mac.holdempoker.app.util.PlayerObserver;
 import java.util.function.Consumer;
 
@@ -18,8 +17,7 @@ import java.util.function.Consumer;
  *
  * @author Mac
  */
-public class RoyalFlush implements Consumer<Card>, HandDistributor,
-        HandRank, CommunityObserver, PlayerObserver {
+public class RoyalFlush implements HandRank, CommunityObserver, PlayerObserver {
 
     private final StraightFlush sFlush;
     
@@ -64,5 +62,10 @@ public class RoyalFlush implements Consumer<Card>, HandDistributor,
     @Override
     public void clearHand() {
         sFlush.clearHand();
+    }
+
+    @Override
+    public boolean isValidHand() {
+        return getHand().length == 5;
     }
 }

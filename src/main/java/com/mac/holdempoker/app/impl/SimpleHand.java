@@ -6,12 +6,9 @@
 package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Card;
-import com.mac.holdempoker.app.Community;
 import com.mac.holdempoker.app.Hand;
-import java.util.Arrays;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.mac.holdempoker.app.HandEvaluator;
+import com.mac.holdempoker.app.enums.HandType;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,47 +17,31 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SimpleHand implements Hand{
-
-    @Autowired
-    @Qualifier("communityImpl")
-    private Community community;
     
-    private static final int MAX_HAND_SIZE = 7;
-    private Card[] hand;
-    private int handIndex;
-    
+    private final HandEvaluator handEvaluator;
+        
     public SimpleHand(){
-        hand = new Card[MAX_HAND_SIZE];
-        this.handIndex = 0;
+        handEvaluator = new SimpleHandEvaluator();
     }
 
     @Override
-    public Card[] getHand() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Card[] getHand() throws Exception {
+        return handEvaluator.getBestHand().getHand();
     }
 
     @Override
     public void addToHand(Card card) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        handEvaluator.haveCard(card);
     }
 
     @Override
-    public int compare(Card o1, Card o2) {
-        return o1.compareTo(o2);
-    }
-    
-    @Override
-    public void setCommunityCards(Community communityCards) {
-        this.community = communityCards;
+    public HandType getHandType() throws Exception {
+        return handEvaluator.getBestHand().getHandType();
     }
 
     @Override
-    public void sortHand() {
-        Arrays.sort(hand, this);
-    }
-    
-    private Card[] getAllCards(Community community, Card[] hand){
-        return ArrayUtils.addAll(community.getCommunityCards(), hand);
+    public void dealt(Card... cards) {
+        handEvaluator.haveCard(cards);
     }
 
 }

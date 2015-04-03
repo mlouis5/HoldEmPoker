@@ -6,15 +6,26 @@
 package com.mac.holdempoker.app;
 
 import com.mac.holdempoker.app.enums.HandType;
+import java.util.Comparator;
+import java.util.function.Consumer;
 
 /**
  *
  * @author Mac
  */
-public interface HandRank {
+public interface HandRank extends Consumer<Card>, Comparator<Card>{
     
     HandType getHandType();
     
     Card[] getHand();
+    
+    boolean isValidHand();
+    
+    void clearHand();
+    
+    @Override
+    public default int compare(Card o1, Card o2) {
+        return o1.compareTo(o2);
+    }
     
 }

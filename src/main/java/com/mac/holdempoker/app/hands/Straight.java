@@ -9,7 +9,6 @@ import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.HandRank;
 import com.mac.holdempoker.app.enums.HandType;
 import com.mac.holdempoker.app.util.CommunityObserver;
-import com.mac.holdempoker.app.util.HandDistributor;
 import com.mac.holdempoker.app.util.PlayerObserver;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,8 +20,7 @@ import java.util.function.Consumer;
  *
  * @author Mac
  */
-public class Straight implements Consumer<Card>, HandDistributor,
-        HandRank, CommunityObserver, PlayerObserver {
+public class Straight implements HandRank, CommunityObserver, PlayerObserver {
 
     private final List<Card> hand;
 
@@ -99,4 +97,10 @@ public class Straight implements Consumer<Card>, HandDistributor,
     public void clearHand() {
         hand.clear();
     }
+
+    @Override
+    public boolean isValidHand() {
+        return getHand().length == 5;
+    }
+    
 }

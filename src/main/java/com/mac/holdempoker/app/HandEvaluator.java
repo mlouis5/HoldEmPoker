@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.app.impl.util;
+package com.mac.holdempoker.app;
 
-import com.mac.holdempoker.app.Hand;
+import com.mac.holdempoker.app.Card;
 
 /**
  *
  * @author MacDerson
  */
-public class HandEvaluator {
+public interface HandEvaluator {
     
-    public long valueHand(Hand hand){
-        return 0;
-    }
+    public void haveCard(Card... card);
+    
+    public HandRank getBestHand() throws Exception;
 }

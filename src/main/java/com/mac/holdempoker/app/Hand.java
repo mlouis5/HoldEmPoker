@@ -5,19 +5,19 @@
  */
 package com.mac.holdempoker.app;
 
+import com.mac.holdempoker.app.enums.HandType;
+import com.mac.holdempoker.app.util.CommunityObserver;
 import java.util.Comparator;
 
 /**
  *
  * @author MacDerson
  */
-public interface Hand extends Comparator<Card>{
+public interface Hand extends CommunityObserver{
     
-    Card[] getHand();
+    Card[] getHand() throws Exception;
     
-    void setCommunityCards(Community communityCards);
+    HandType getHandType() throws Exception;
     
     void addToHand(Card card);
-    
-    void sortHand();
 }
