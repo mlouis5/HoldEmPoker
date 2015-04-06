@@ -7,13 +7,11 @@ package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Hand;
-import com.mac.holdempoker.app.HandEvaluator;
 import com.mac.holdempoker.app.HandRank;
 import com.mac.holdempoker.app.enums.HandType;
 import com.mac.holdempoker.app.exceptions.InvalidHandException;
 import com.mac.holdempoker.app.impl.util.HandMatrix;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
 

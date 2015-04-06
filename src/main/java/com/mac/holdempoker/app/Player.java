@@ -33,6 +33,8 @@ public interface Player extends BoardObserver{
     
     void haveHoleCard(Card card);
     
+    void haveSharedCards(Card... card);
+    
     void setIsDealer(boolean isDealer);
     
     void setIsBigBlind(boolean isBigBlind);

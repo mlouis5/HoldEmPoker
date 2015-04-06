@@ -12,7 +12,7 @@ import com.mac.holdempoker.app.util.BoardObserver;
  *
  * @author MacDerson
  */
-public interface Hand extends BoardObserver{
+public interface Hand {
     
     Card[] getHand() throws Exception;
     
@@ -23,4 +23,6 @@ public interface Hand extends BoardObserver{
     void clearHand();
     
     HandRank getHandRank() throws Exception;
+    
+    void haveSharedCards(Card... cards);
 }

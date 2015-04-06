@@ -13,5 +13,5 @@ import com.mac.holdempoker.app.Card;
  */
 public interface BoardObserver {
     
-    void haveSharedCards(Card... card);
+    
 }
