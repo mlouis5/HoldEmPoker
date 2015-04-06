@@ -6,11 +6,14 @@
 package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Card;
+import com.mac.holdempoker.app.Hand;
 import com.mac.holdempoker.app.HandAggregator;
 import com.mac.holdempoker.app.HandEvaluator;
+import com.mac.holdempoker.app.HandRank;
 import com.mac.holdempoker.app.enums.HandType;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 
 /**
  *
@@ -19,46 +22,49 @@ import java.util.Comparator;
 public class SimpleHandAggregator implements HandAggregator, Comparator<Card> {
 
     @Override
-    public long scoreHand(HandEvaluator hand) throws Exception {
-        
-        HandType ht = hand.getBestHand().getHandType();
-        Card[] cards = hand.getBestHand().getHand();
-        Arrays.sort(cards, this);
-        switch (ht) {
-            case ROYAL_FLUSH: {
-                return ht.getInterValue();
-            }
-            case STRAIGHT_FLUSH: {
-                return ht.getInterValue() + scoreHighHand(cards);
-            }
-            case FOUR_OF_A_KIND: {
-                return ht.getInterValue() + scoreTripsBoatQuads(cards);
-            }
-            case FULL_HOUSE: {
-                return ht.getInterValue() + scoreTripsBoatQuads(cards);
-            }
-            case FLUSH: {
-                return ht.getInterValue() + scoreHighHand(cards);
-            }
-            case STRAIGHT: {
-                return ht.getInterValue() + scoreHighHand(cards);
-            }
-            case THREE_OF_A_KIND: {
-                return ht.getInterValue() + scoreTripsBoatQuads(cards);
-            }
-            case TWO_PAIR: {
-                return ht.getInterValue() + scoreTwoPair(cards);
-            }
-            case PAIR: {
-                return ht.getInterValue() + scorePair(cards);
-            }
-            case HIGH: {
-                return scoreHighHand(cards);
-            }
-            default: {
-                return 0L;
+    public long scoreHand(Hand hand) throws Exception {
+        if (Objects.nonNull(hand)) {
+            HandRank hr = hand.getHandRank();
+            HandType ht = hr.getHandType();
+            Card[] cards = hr.getHand();
+            Arrays.sort(cards, this);
+            switch (ht) {
+                case ROYAL_FLUSH: {
+                    return ht.getInterValue();
+                }
+                case STRAIGHT_FLUSH: {
+                    return ht.getInterValue() + scoreHighHand(cards);
+                }
+                case FOUR_OF_A_KIND: {
+                    return ht.getInterValue() + scoreTripsBoatQuads(cards);
+                }
+                case FULL_HOUSE: {
+                    return ht.getInterValue() + scoreTripsBoatQuads(cards);
+                }
+                case FLUSH: {
+                    return ht.getInterValue() + scoreHighHand(cards);
+                }
+                case STRAIGHT: {
+                    return ht.getInterValue() + scoreHighHand(cards);
+                }
+                case THREE_OF_A_KIND: {
+                    return ht.getInterValue() + scoreTripsBoatQuads(cards);
+                }
+                case TWO_PAIR: {
+                    return ht.getInterValue() + scoreTwoPair(cards);
+                }
+                case PAIR: {
+                    return ht.getInterValue() + scorePair(cards);
+                }
+                case HIGH: {
+                    return scoreHighHand(cards);
+                }
+                default: {
+                    return 0L;
+                }
             }
         }
+        return 0;
     }
 
     private long scoreHighHand(Card[] hand) {
@@ -71,7 +77,7 @@ public class SimpleHandAggregator implements HandAggregator, Comparator<Card> {
     }
 
     private long scorePair(Card[] hand) {
-        long val = 0L;
+        long val;
         if (hand[0].getRank() == hand[1].getRank()) {
             // a a x y z
             val = (long) Math.pow(14, 3) * hand[0].getRank().value()
@@ -101,22 +107,22 @@ public class SimpleHandAggregator implements HandAggregator, Comparator<Card> {
         if (hand[0].getRank().value() == hand[1].getRank().value()
                 && hand[2].getRank().value() == hand[3].getRank().value()) {
             // a a b b x
-            val = (long )Math.pow(14, 2) * hand[2].getRank().value() + 14 * 
-                    hand[0].getRank().value() + hand[4].getRank().value();
+            val = (long) Math.pow(14, 2) * hand[2].getRank().value() + 14
+                    * hand[0].getRank().value() + hand[4].getRank().value();
         } else if (hand[0].getRank().value() == hand[1].getRank().value()
                 && hand[3].getRank().value() == hand[4].getRank().value()) {
             // a a x b b
-            val = (long )Math.pow(14, 2) * hand[3].getRank().value() + 14 * 
-                    hand[0].getRank().value() + hand[2].getRank().value();
+            val = (long) Math.pow(14, 2) * hand[3].getRank().value() + 14
+                    * hand[0].getRank().value() + hand[2].getRank().value();
         } else {
             // x a a b b
-            val = (long )Math.pow(14, 2) * hand[3].getRank().value() + 14 * 
-                    hand[1].getRank().value() + hand[0].getRank().value();
+            val = (long) Math.pow(14, 2) * hand[3].getRank().value() + 14
+                    * hand[1].getRank().value() + hand[0].getRank().value();
         }
         return val;
     }
-    
-    public long scoreTripsBoatQuads(Card[] cards){
+
+    public long scoreTripsBoatQuads(Card[] cards) {
         return cards[2].getRank().value();
     }
 

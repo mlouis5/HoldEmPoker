@@ -11,5 +11,5 @@ package com.mac.holdempoker.app;
  */
 public interface HandAggregator {
     
-    long scoreHand(HandEvaluator hand) throws Exception;
+    long scoreHand(Hand hand) throws Exception;
 }

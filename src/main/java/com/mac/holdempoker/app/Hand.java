@@ -22,5 +22,5 @@ public interface Hand extends CommunityObserver{
     
     void clearHand();
     
-    HandEvaluator getEvaluator();
+    HandRank getHandRank() throws Exception;
 }

@@ -14,7 +14,6 @@ import java.util.Arrays;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.springframework.util.Assert;
 
 /**
@@ -56,10 +55,11 @@ public class SimpleHandTest {
         Card[] result = hand.getHand();
         System.out.println(hand.getHandType());
         System.out.println("hand:" + Arrays.toString(result));
-//        Assert.isTrue(hand.getHandType() == HandType.FULL_HOUSE);
+        System.out.println(hand.getHandType());
+        Assert.isTrue(hand.getHandType() == HandType.ROYAL_FLUSH);
         
         SimpleHandAggregator sha = new SimpleHandAggregator();
-        System.out.println(sha.scoreHand(hand.getEvaluator()));
+        System.out.println(sha.scoreHand(hand));
     }
     
 }

@@ -8,7 +8,13 @@ package com.mac.holdempoker.app.impl;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Hand;
 import com.mac.holdempoker.app.HandEvaluator;
+import com.mac.holdempoker.app.HandRank;
 import com.mac.holdempoker.app.enums.HandType;
+import com.mac.holdempoker.app.exceptions.InvalidHandException;
+import com.mac.holdempoker.app.impl.util.HandMatrix;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,42 +22,55 @@ import org.springframework.stereotype.Component;
  * @author MacDerson
  */
 @Component
-public class SimpleHand implements Hand{
-    
-    private final HandEvaluator handEvaluator;
-        
-    public SimpleHand(){
-        handEvaluator = new SimpleHandEvaluator();
+public class SimpleHand implements Hand {
+
+    private final HandMatrix matrix;
+
+    public SimpleHand() {
+        matrix = new HandMatrix();
     }
 
     @Override
     public Card[] getHand() throws Exception {
-        return handEvaluator.getBestHand().getHand();
+        HandRank hr = matrix.getHand();
+        if (Objects.nonNull(hr)) {
+            return hr.getHand();
+        }
+        throw new InvalidHandException("Unable to obtain a valid hand");
     }
 
     @Override
     public void addToHand(Card card) {
-        handEvaluator.haveCard(card);
+        matrix.haveCard(card);
     }
 
     @Override
     public HandType getHandType() throws Exception {
-        return handEvaluator.getBestHand().getHandType();
+        HandRank hr = matrix.getHand();
+        if (Objects.nonNull(hr)) {
+            return hr.getHandType();
+        }
+        throw new InvalidHandException("Unable to obtain a valid HandType");
     }
 
     @Override
     public void dealt(Card... cards) {
-        handEvaluator.haveCard(cards);
+        if (Objects.nonNull(cards)) {
+            for (Card card : cards) {
+                matrix.haveCard(card);
+            }
+        }
     }
 
     @Override
     public void clearHand() {
-        handEvaluator.clearHands();
+        matrix.clearHand();
     }
 
     @Override
-    public HandEvaluator getEvaluator() {
-        return handEvaluator;
+    public HandRank getHandRank() throws InvalidHandException,
+            IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException {
+        return matrix.getHand();
     }
-
 }
