@@ -5,13 +5,11 @@
  */
 package com.mac.holdempoker.app;
 
-import com.mac.holdempoker.app.Card;
-
 /**
  *
  * @author MacDerson
  */
 public interface HandAggregator {
     
-    long scoreHand(Card[] hand);
+    long scoreHand(HandEvaluator hand) throws Exception;
 }

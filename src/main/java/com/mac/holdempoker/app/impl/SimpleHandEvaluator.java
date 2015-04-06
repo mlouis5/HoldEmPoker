@@ -64,4 +64,11 @@ public class SimpleHandEvaluator implements HandEvaluator {
         ranks[8] = new Pair();
         ranks[9] = new High();
     }
+
+    @Override
+    public void clearHands() {
+        for(HandRank hr : ranks){
+            hr.clearHand();
+        }
+    }
 }

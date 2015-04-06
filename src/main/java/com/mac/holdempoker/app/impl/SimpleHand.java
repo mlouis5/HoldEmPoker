@@ -44,4 +44,14 @@ public class SimpleHand implements Hand{
         handEvaluator.haveCard(cards);
     }
 
+    @Override
+    public void clearHand() {
+        handEvaluator.clearHands();
+    }
+
+    @Override
+    public HandEvaluator getEvaluator() {
+        return handEvaluator;
+    }
+
 }

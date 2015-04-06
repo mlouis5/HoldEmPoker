@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
 import org.apache.commons.collections.ListUtils;
 
 /**
@@ -66,8 +65,7 @@ public class Pairs implements HandRank, CommunityObserver, PlayerObserver {
     @Override
     public Card[] getHand() {
         Card highestSingle = null;
-        List<Card> high = new ArrayList(2);
-        List<Card> low = new ArrayList(2);
+        List<Card> pairs = new ArrayList(2);
                 
         for (Map.Entry<Rank, List<Card>> entry : hand.entrySet()) {
             List<Card> list = entry.getValue();
@@ -80,32 +78,18 @@ public class Pairs implements HandRank, CommunityObserver, PlayerObserver {
                     }
                 }
             } else if (list.size() == 2) {
-                if (low.isEmpty() && high.isEmpty()) {
-                    low.addAll(list);
-                    high.addAll(list);
-                } else {
-                    int lowRank = low.get(0).getRank().value();
-                    int highRank = high.get(0).getRank().value();
-                    if(lowRank == highRank){
-                        if(entry.getKey().value() > highRank){
-                            high.clear();
-                            high.addAll(list);
-                        }
-                    }else{
-                        int entryRank = entry.getKey().value();
-                        if(entryRank > highRank){
-                            high.clear();
-                            high.addAll(list);
-                        }else if(entryRank > lowRank && entryRank < highRank){
-                            low.clear();
-                            low.addAll(list);
-                        }
-                    }
-                    
-                }
+                pairs.addAll(list);
             }
         }
-        List<Card> all = ListUtils.union(low, high); 
+        Collections.sort(pairs);
+        while(pairs.size() > 4){
+            pairs.remove(0);
+        }
+        if(pairs.size() != 4 || (pairs.get(1).getRank() == pairs.get(2).getRank())){
+            return new Card[0];
+        }
+        List<Card> all = new ArrayList();
+        all.addAll(pairs);
         
         if(Objects.nonNull(highestSingle)){
             all.add(highestSingle);

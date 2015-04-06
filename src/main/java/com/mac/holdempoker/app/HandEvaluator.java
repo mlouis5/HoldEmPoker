@@ -5,8 +5,6 @@
  */
 package com.mac.holdempoker.app;
 
-import com.mac.holdempoker.app.Card;
-
 /**
  *
  * @author MacDerson
@@ -16,4 +14,6 @@ public interface HandEvaluator {
     public void haveCard(Card... card);
     
     public HandRank getBestHand() throws Exception;
+    
+    public void clearHands();
 }

@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  *
@@ -82,7 +83,8 @@ public class Straight implements HandRank, CommunityObserver, PlayerObserver {
             finalList.remove(0);
         }
         int size = finalList.size();
-        if (size == 4 && ((finalList.get(size - 1).getRank().value()) == 5 && (finalList.get(0).getRank().value()) == 2)) {
+        if (size == 4 && ((finalList.get(size - 1).getRank().value()) == 5 
+                && (finalList.get(0).getRank().value()) == 2)) {
             if (hand.get(hand.size() - 1).getRank().value() == 14) {
                 finalList.add(hand.get(hand.size() - 1));
                 return finalList.toArray(new Card[5]);
