@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.app.util;
+package com.mac.holdempoker.app;
 
-import com.mac.holdempoker.app.Card;
+import java.util.List;
 
 /**
  *
- * @author Mac
+ * @author MacDerson
  */
-public interface CommunityObserver {
+public interface DealOrder {
     
-    void dealt(Card... card);
+    void orderPlayers(List<Player> players);
+    
+    List<Player> getDealOrder();
 }

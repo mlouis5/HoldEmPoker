@@ -11,7 +11,7 @@ import com.mac.holdempoker.app.util.Observable;
  *
  * @author Mac
  */
-public interface Community extends Observable{
+public interface Board extends Observable{
 
     Card[] getFlop();
 

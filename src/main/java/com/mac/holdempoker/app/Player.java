@@ -5,13 +5,13 @@
  */
 package com.mac.holdempoker.app;
 
-import java.util.List;
+import com.mac.holdempoker.app.util.BoardObserver;
 
 /**
  *
  * @author Mac
  */
-public interface Player {
+public interface Player extends BoardObserver{
     
     void setPlayerName(String pName);
     
@@ -21,11 +21,27 @@ public interface Player {
     
     int getPlayerNumber();
     
-    void haveCard(Card card);
-    
     void resetHand();
     
-    void deductAmount(int amount);
+    void decreaseStack(int amount);
     
-    int getGambleAmount();
+    void increaseStack(int amount);
+    
+    int getBetAmount();
+    
+    boolean isEliminated();
+    
+    void haveHoleCard(Card card);
+    
+    void setIsDealer(boolean isDealer);
+    
+    void setIsBigBlind(boolean isBigBlind);
+    
+    void setIsSmallBlind(boolean isSmallBlind);
+    
+    boolean getIsBigBlind();
+    
+    boolean getIsSmallBlined();
+    
+    boolean getIsDealer();
 }

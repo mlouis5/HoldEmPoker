@@ -11,7 +11,7 @@ package com.mac.holdempoker.app.util;
  */
 public interface Observable {
     
-    void add(CommunityObserver observer);
+    void add(BoardObserver observer);
     
     void notifyObservers();
 }

@@ -54,7 +54,7 @@ public class SimpleHand implements Hand {
     }
 
     @Override
-    public void dealt(Card... cards) {
+    public void haveSharedCards(Card... cards) {
         if (Objects.nonNull(cards)) {
             for (Card card : cards) {
                 matrix.haveCard(card);

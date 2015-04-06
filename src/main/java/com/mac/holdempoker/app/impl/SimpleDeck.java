@@ -41,7 +41,7 @@ public class SimpleDeck implements Deck {
         if(deck.isEmpty()){
             return null;
         }
-        return deck.get(deck.size() - 1);
+        return deck.remove(deck.size() - 1);
     }
 
     @Override

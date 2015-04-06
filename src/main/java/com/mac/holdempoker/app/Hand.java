@@ -6,13 +6,13 @@
 package com.mac.holdempoker.app;
 
 import com.mac.holdempoker.app.enums.HandType;
-import com.mac.holdempoker.app.util.CommunityObserver;
+import com.mac.holdempoker.app.util.BoardObserver;
 
 /**
  *
  * @author MacDerson
  */
-public interface Hand extends CommunityObserver{
+public interface Hand extends BoardObserver{
     
     Card[] getHand() throws Exception;
     
