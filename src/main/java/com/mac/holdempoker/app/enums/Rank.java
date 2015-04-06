@@ -26,6 +26,16 @@ public enum Rank {
     public String rank() {
         return this.value;
     }
+    
+    public static Rank getRank(int value){
+        Rank[] r = Rank.class.getEnumConstants();
+        for(Rank rank : r){
+            if(rank.value() == value){
+                return rank;
+            }
+        }
+        return null;
+    }
 
     public int value() {
         return rank;

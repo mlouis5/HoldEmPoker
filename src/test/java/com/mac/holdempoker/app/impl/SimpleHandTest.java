@@ -7,6 +7,7 @@ package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Hand;
+import com.mac.holdempoker.app.HandRank;
 import com.mac.holdempoker.app.enums.HandType;
 import com.mac.holdempoker.app.enums.Rank;
 import com.mac.holdempoker.app.enums.Suit;
@@ -30,13 +31,13 @@ public class SimpleHandTest {
     
     @Before
     public void setUp() {
-        hand.addToHand(new SimpleCard(Suit.CLUB, Rank.ACE));
-        hand.addToHand(new SimpleCard(Suit.CLUB, Rank.KING));
-        hand.addToHand(new SimpleCard(Suit.CLUB, Rank.QUEEN));
+        hand.addToHand(new SimpleCard(Suit.HEART, Rank.KING));
         hand.addToHand(new SimpleCard(Suit.CLUB, Rank.JACK));
-        hand.addToHand(new SimpleCard(Suit.DIAMOND, Rank.THREE));
-        hand.addToHand(new SimpleCard(Suit.CLUB, Rank.TEN));
-        hand.addToHand(new SimpleCard(Suit.SPADE, Rank.FOUR));
+        hand.addToHand(new SimpleCard(Suit.DIAMOND, Rank.NINE));
+        hand.addToHand(new SimpleCard(Suit.HEART, Rank.SEVEN));
+        hand.addToHand(new SimpleCard(Suit.SPADE, Rank.FIVE));
+        hand.addToHand(new SimpleCard(Suit.CLUB, Rank.THREE));
+        hand.addToHand(new SimpleCard(Suit.SPADE, Rank.ACE));
     }
     
     @After
@@ -52,11 +53,11 @@ public class SimpleHandTest {
     public void testGetHand() throws Exception {
         System.out.println(getClass().getSimpleName() + ": getHand");
         
-        Card[] result = hand.getHand();
-        System.out.println(hand.getHandType());
+        HandRank hr = hand.getHandRank();
+        Card[] result = hr.getHand();
+        System.out.println(hr.getHandType());
         System.out.println("hand:" + Arrays.toString(result));
-        System.out.println(hand.getHandType());
-        Assert.isTrue(hand.getHandType() == HandType.ROYAL_FLUSH);
+        Assert.isTrue(hr.getHandType() == HandType.HIGH);
         
         SimpleHandAggregator sha = new SimpleHandAggregator();
         System.out.println(sha.scoreHand(hand));
