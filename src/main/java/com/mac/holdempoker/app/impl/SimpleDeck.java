@@ -84,4 +84,16 @@ public class SimpleDeck implements Deck {
             }
         }
     }
+
+    @Override
+    public Card[] drawNumCards(int numCards) {
+        if(numCards < 1){
+            return null;
+        }   
+        Card[] cards = new Card[numCards];
+        for(int i = 0; i < numCards; i++){
+            cards[i] = drawNextCard();
+        }
+        return cards;
+    }
 }

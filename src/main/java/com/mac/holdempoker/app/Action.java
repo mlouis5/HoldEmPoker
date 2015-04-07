@@ -5,13 +5,11 @@
  */
 package com.mac.holdempoker.app;
 
-import java.util.List;
-
 /**
  *
  * @author MacDerson
  */
-public interface DealOrder {
-        
-    List<Player> getDealOrder();
+public interface Action {
+    
+    void setActingPlayer(Player p);
 }

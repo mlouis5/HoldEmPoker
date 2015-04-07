@@ -5,6 +5,8 @@
  */
 package com.mac.holdempoker.app;
 
+import com.mac.holdempoker.app.exceptions.InvalidBoardException;
+
 /**
  *
  * @author MacDerson
@@ -16,7 +18,7 @@ public interface GameDealer {
     
     void dealAround();
     
-    void dealFlop();
-    void dealTurn();
-    void dealRiver();
+    void dealFlop() throws InvalidBoardException;
+    void dealTurn() throws InvalidBoardException;
+    void dealRiver() throws InvalidBoardException;
 }

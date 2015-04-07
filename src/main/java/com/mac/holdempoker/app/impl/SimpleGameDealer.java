@@ -6,10 +6,12 @@
 package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Board;
+import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.DealOrder;
 import com.mac.holdempoker.app.Deck;
 import com.mac.holdempoker.app.GameDealer;
 import com.mac.holdempoker.app.Player;
+import com.mac.holdempoker.app.exceptions.InvalidBoardException;
 import com.mac.holdempoker.app.impl.util.DealOrderImpl;
 import java.util.Arrays;
 import java.util.List;
@@ -26,18 +28,22 @@ public class SimpleGameDealer implements GameDealer {
     private List<Player> players;
     private DealOrder dealOrder;
     private Deck deck;
+    
+    
+    
+    public SimpleGameDealer(){
+        this.deck = new SimpleDeck();
+    }
 
     @Override
     public void setBoard(Board board) {
         this.board = board;
-        this.deck = new SimpleDeck();
-        this.dealOrder = new DealOrderImpl();
     }
 
     @Override
     public void setPlayers(Player... players) {
         this.players = Arrays.asList(players);
-        dealOrder.orderPlayers(this.players);
+        this.dealOrder = new DealOrderImpl(this.players);
     }
 
     @Override
@@ -55,18 +61,34 @@ public class SimpleGameDealer implements GameDealer {
     }
 
     @Override
-    public void dealFlop() {
+    public void dealFlop() throws InvalidBoardException {
+        validateBoard();
+        deck.burnCard();
+        Card[] flop = deck.drawNumCards(3);
+        board.setFlop(flop);
+        
+        for(Player p : players){
+            if(!p.isEliminated()){
+                p.haveSharedCards(flop);
+            }
+        }
+    }
+
+    @Override
+    public void dealTurn() throws InvalidBoardException {
+        validateBoard();
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void dealTurn() {
+    public void dealRiver() throws InvalidBoardException {
+        validateBoard();
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public void dealRiver() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void validateBoard() throws InvalidBoardException{
+        if(Objects.isNull(board)){
+            throw new InvalidBoardException(board);
+        }
     }
-
 }

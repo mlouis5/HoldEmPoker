@@ -46,4 +46,5 @@ public interface Player extends BoardObserver{
     boolean getIsSmallBlined();
     
     boolean getIsDealer();
+    
 }
