@@ -19,4 +19,6 @@ public interface GameDealer {
     void dealAround();
     
     void dealBoard() throws InvalidBoardException;
+    
+    void actionPerformed(Action action);
 }

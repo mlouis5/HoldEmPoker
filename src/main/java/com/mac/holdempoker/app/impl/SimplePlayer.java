@@ -5,9 +5,11 @@
  */
 package com.mac.holdempoker.app.impl;
 
+import com.mac.holdempoker.app.Action;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Hand;
 import com.mac.holdempoker.app.Player;
+import java.util.Objects;
 
 /**
  *
@@ -15,28 +17,26 @@ import com.mac.holdempoker.app.Player;
  */
 public class SimplePlayer implements Player {
 
-    private String pName;
+    private String playerFirstName;
+    private String playerLastName;
+    private String playerEmail;
+    private String playerId;
     private final Hand hand;
     private int pNumber;
     private int chipStack;
-    private int betAmount;
     private boolean isDealer;
     private boolean isBigBlind;
     private boolean isSmallBlind;
-    private int betOrder;
+    private int actionOrder;
+    private Action action;
 
     public SimplePlayer() {
         this.hand = new SimpleHand();
     }
 
     @Override
-    public void setPlayerName(String pName) {
-        this.pName = pName;
-    }
-
-    @Override
     public String getPlayerName() {
-        return pName;
+        return playerFirstName + " " + playerLastName;
     }
 
     @Override
@@ -66,11 +66,6 @@ public class SimplePlayer implements Player {
     @Override
     public void increaseStack(int amount) {
         chipStack += amount;
-    }
-
-    @Override
-    public int getBetAmount() {
-        return betAmount;
     }
 
     @Override
@@ -121,8 +116,88 @@ public class SimplePlayer implements Player {
     }
 
     @Override
-    public void setBetOrder(int betOrder) {
-        this.betOrder = betOrder;
+    public void setActionOrder(int actionOrder) {
+        this.actionOrder = actionOrder;
+    }
+
+    @Override
+    public void setAction(Action action) {
+        this.action = action;
+    }
+
+    @Override
+    public Action getAction() {
+        return action;
+    }
+
+    @Override
+    public void setPlayerId(String pId) {
+        this.playerId = pId;
+    }
+
+    @Override
+    public String getPlayerId() {
+        return this.playerId;
+    }
+
+    @Override
+    public void setPlayerEmail(String pEmail) {
+        this.playerEmail = pEmail;
+    }
+
+    @Override
+    public String getPlayerEmail() {
+        return this.playerEmail;
+    }
+
+    @Override
+    public void setPlayerFirstName(String fName) {
+        this.playerFirstName = fName;
+    }
+
+    @Override
+    public String getPlayerFirstName() {
+        return this.playerFirstName;
+    }
+
+    @Override
+    public void setPlayerLastName(String lName) {
+        this.playerLastName = lName;
+    }
+
+    @Override
+    public String getPlayerLastName() {
+        return this.playerLastName;
+    }
+
+    @Override
+    public int getActionOrder() {
+        return this.actionOrder;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.playerFirstName);
+        hash = 89 * hash + Objects.hashCode(this.playerLastName);
+        hash = 89 * hash + Objects.hashCode(this.playerEmail);
+        hash = 89 * hash + Objects.hashCode(this.playerId);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SimplePlayer other = (SimplePlayer) obj;
+        return Objects.equals(this.playerFirstName, other.playerFirstName)
+                && Objects.equals(this.playerLastName, other.playerLastName)
+                && Objects.equals(this.playerEmail, other.playerEmail)
+                && Objects.equals(this.playerId, other.playerId);
     }
 
 }

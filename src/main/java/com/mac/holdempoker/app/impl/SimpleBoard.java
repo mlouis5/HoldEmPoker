@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class SimpleBoard implements Board {
 
-    private List<Card> board;
+    private final List<Card> board;
     
     public SimpleBoard(){
         board = new ArrayList();

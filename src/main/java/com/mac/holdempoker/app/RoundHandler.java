@@ -5,17 +5,20 @@
  */
 package com.mac.holdempoker.app;
 
-import com.mac.holdempoker.app.enums.ActionName;
+import com.mac.holdempoker.app.exceptions.InvalidActionException;
+import java.util.List;
 
 /**
  *
  * @author MacDerson
  */
-public interface Action {
+public interface RoundHandler {
     
-    void setActingPlayer(Player p);
+    void reset();
     
-    Player getActingPlayer();
+    void newRound();
     
-    ActionName getActionName();
+    void setAction(Action action) throws InvalidActionException;
+    
+    void assessCurrentRound();
 }

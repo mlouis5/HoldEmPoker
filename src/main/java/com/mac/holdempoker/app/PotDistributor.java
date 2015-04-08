@@ -5,17 +5,12 @@
  */
 package com.mac.holdempoker.app;
 
-import com.mac.holdempoker.app.enums.ActionName;
+import java.util.List;
 
 /**
  *
  * @author MacDerson
  */
-public interface Action {
-    
-    void setActingPlayer(Player p);
-    
-    Player getActingPlayer();
-    
-    ActionName getActionName();
+public interface PotDistributor {
+    void distributePot(Pot pot, List<Player> players);
 }

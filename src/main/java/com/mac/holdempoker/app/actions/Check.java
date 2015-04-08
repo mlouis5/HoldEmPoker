@@ -5,7 +5,7 @@
  */
 package com.mac.holdempoker.app.actions;
 
-import com.mac.holdempoker.app.MonetaryAction;
+import com.mac.holdempoker.app.Action;
 import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.enums.ActionName;
 
@@ -13,17 +13,7 @@ import com.mac.holdempoker.app.enums.ActionName;
  *
  * @author MacDerson
  */
-public class Call implements MonetaryAction{
-
-    @Override
-    public int getAmount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setAmount(int amt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+public class Check implements Action{
 
     @Override
     public void setActingPlayer(Player p) {

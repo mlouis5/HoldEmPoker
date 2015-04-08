@@ -13,7 +13,21 @@ import com.mac.holdempoker.app.util.BoardObserver;
  */
 public interface Player extends BoardObserver{
     
-    void setPlayerName(String pName);
+    void setPlayerId(String pId);
+    
+    String getPlayerId();
+    
+    void setPlayerEmail(String pEmail);
+    
+    String getPlayerEmail();
+    
+    void setPlayerFirstName(String fName);
+    
+    String getPlayerFirstName();
+    
+    void setPlayerLastName(String lName);
+    
+    String getPlayerLastName();
     
     String getPlayerName();
     
@@ -26,8 +40,6 @@ public interface Player extends BoardObserver{
     void decreaseStack(int amount);
     
     void increaseStack(int amount);
-    
-    int getBetAmount();
     
     boolean isEliminated();
     
@@ -47,5 +59,11 @@ public interface Player extends BoardObserver{
     
     boolean getIsDealer();
     
-    void setBetOrder(int betOrder);
+    void setActionOrder(int betOrder);
+    
+    int getActionOrder();
+    
+    void setAction(Action action);
+    
+    Action getAction();
 }

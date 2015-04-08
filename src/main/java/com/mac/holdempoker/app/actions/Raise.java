@@ -7,6 +7,7 @@ package com.mac.holdempoker.app.actions;
 
 import com.mac.holdempoker.app.MonetaryAction;
 import com.mac.holdempoker.app.Player;
+import com.mac.holdempoker.app.enums.ActionName;
 
 /**
  *
@@ -26,6 +27,16 @@ public class Raise implements MonetaryAction{
 
     @Override
     public void setActingPlayer(Player p) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ActionName getActionName() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Player getActingPlayer() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

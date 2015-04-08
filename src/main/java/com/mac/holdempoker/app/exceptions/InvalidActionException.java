@@ -3,19 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.app;
-
-import com.mac.holdempoker.app.enums.ActionName;
+package com.mac.holdempoker.app.exceptions;
 
 /**
  *
  * @author MacDerson
  */
-public interface Action {
+public class InvalidActionException extends Exception{
     
-    void setActingPlayer(Player p);
-    
-    Player getActingPlayer();
-    
-    ActionName getActionName();
+    public InvalidActionException(String msg){
+        super(msg);
+    }
 }

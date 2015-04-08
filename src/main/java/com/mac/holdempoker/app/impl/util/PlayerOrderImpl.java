@@ -70,7 +70,7 @@ public class PlayerOrderImpl implements PlayerOrder, Comparator<Card> {
         orderedPlayers.get(getPointer()).setIsSmallBlind(true);
         orderedPlayers.get(getPointer()).setIsBigBlind(true);
         for(int i = 0; i < orderedPlayers.size(); i++){
-            orderedPlayers.get(getPointer()).setBetOrder((i+1));
+            orderedPlayers.get(getPointer()).setActionOrder((i+1));
         }
         return new ArrayList(orderedPlayers);
     }

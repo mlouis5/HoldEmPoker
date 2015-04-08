@@ -5,6 +5,7 @@
  */
 package com.mac.holdempoker.app.impl;
 
+import com.mac.holdempoker.app.Action;
 import com.mac.holdempoker.app.Board;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.PlayerOrder;
@@ -13,7 +14,6 @@ import com.mac.holdempoker.app.GameDealer;
 import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.Pot;
 import com.mac.holdempoker.app.enums.Deal;
-import com.mac.holdempoker.app.enums.PotType;
 import com.mac.holdempoker.app.exceptions.InvalidBoardException;
 import com.mac.holdempoker.app.impl.util.PlayerOrderImpl;
 import java.util.Arrays;
@@ -101,5 +101,10 @@ public class SimpleGameDealer implements GameDealer {
         if(Objects.isNull(board)){
             throw new InvalidBoardException(board);
         }
+    }
+
+    @Override
+    public void actionPerformed(Action action) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

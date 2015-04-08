@@ -5,9 +5,9 @@
  */
 package com.mac.holdempoker.app.actions;
 
-import com.mac.holdempoker.app.Action;
 import com.mac.holdempoker.app.MonetaryAction;
 import com.mac.holdempoker.app.Player;
+import com.mac.holdempoker.app.enums.ActionName;
 
 /**
  *
@@ -33,6 +33,16 @@ public class Bet implements MonetaryAction {
         if (amt > 0) {
             this.amount = amt;
         }
+    }
+
+    @Override
+    public ActionName getActionName() {
+        return ActionName.BET;
+    }
+
+    @Override
+    public Player getActingPlayer() {
+        return actingPlayer;
     }
 
 }
