@@ -19,12 +19,10 @@ public interface Board extends Observable{
 
     Card getRiver();
 
-    void setFlop(Card[] flop);
-
-    void setTurn(Card turnCard);
-
-    void setRiver(Card riverCard);
+    void dealToBoard(Card... cards);
     
-    Card[] getCommunityCards();
+    Card[] getBoard();
+    
+    void resetBoard();
 
 }

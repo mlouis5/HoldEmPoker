@@ -7,14 +7,19 @@ package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Board;
 import com.mac.holdempoker.app.Card;
-import com.mac.holdempoker.app.DealOrder;
+import com.mac.holdempoker.app.PlayerOrder;
 import com.mac.holdempoker.app.Deck;
 import com.mac.holdempoker.app.GameDealer;
 import com.mac.holdempoker.app.Player;
+import com.mac.holdempoker.app.Pot;
+import com.mac.holdempoker.app.enums.Deal;
+import com.mac.holdempoker.app.enums.PotType;
 import com.mac.holdempoker.app.exceptions.InvalidBoardException;
-import com.mac.holdempoker.app.impl.util.DealOrderImpl;
+import com.mac.holdempoker.app.impl.util.PlayerOrderImpl;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -26,13 +31,15 @@ public class SimpleGameDealer implements GameDealer {
     private static final int DEAL_ROUNDS = 2;
     private Board board;
     private List<Player> players;
-    private DealOrder dealOrder;
-    private Deck deck;
-    
-    
+    private PlayerOrder dealOrder;
+    private final Deck deck;
+    private Deal currentDeal;
+    private Map<Pot, List<Player>> pots;
     
     public SimpleGameDealer(){
         this.deck = new SimpleDeck();
+        currentDeal = Deal.FLOP;
+        pots = new HashMap();
     }
 
     @Override
@@ -43,7 +50,7 @@ public class SimpleGameDealer implements GameDealer {
     @Override
     public void setPlayers(Player... players) {
         this.players = Arrays.asList(players);
-        this.dealOrder = new DealOrderImpl(this.players);
+        this.dealOrder = new PlayerOrderImpl(this.players);
     }
 
     @Override
@@ -61,29 +68,33 @@ public class SimpleGameDealer implements GameDealer {
     }
 
     @Override
-    public void dealFlop() throws InvalidBoardException {
+    public void dealBoard() throws InvalidBoardException {
         validateBoard();
         deck.burnCard();
-        Card[] flop = deck.drawNumCards(3);
-        board.setFlop(flop);
+        Card[] card = null;
         
-        for(Player p : players){
-            if(!p.isEliminated()){
-                p.haveSharedCards(flop);
+        switch(currentDeal){
+            case FLOP:{
+                card = deck.drawNumCards(3);
+                currentDeal = Deal.TURN;
+                break;
+            }
+            case TURN:{
+                 card = deck.drawNumCards(1);
+                 currentDeal = Deal.RIVER;
+                 break;
+            }
+            case RIVER:{
+                card = deck.drawNumCards(1);
+                currentDeal = Deal.FLOP;
             }
         }
-    }
-
-    @Override
-    public void dealTurn() throws InvalidBoardException {
-        validateBoard();
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void dealRiver() throws InvalidBoardException {
-        validateBoard();
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        board.dealToBoard(card);        
+        for(Player p : players){
+            if(!p.isEliminated()){
+                p.haveSharedCards(card);
+            }
+        }
     }
 
     private void validateBoard() throws InvalidBoardException{

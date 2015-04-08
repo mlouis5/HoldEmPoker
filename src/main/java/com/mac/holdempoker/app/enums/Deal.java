@@ -3,17 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.app;
+package com.mac.holdempoker.app.enums;
 
 /**
  *
  * @author MacDerson
  */
-public interface Pot{
-
-    void increasePot(int amount);
-    
-    int getPotAmount();
-    
-    void clearPot();
+public enum Deal {
+    FLOP, TURN, RIVER;
 }

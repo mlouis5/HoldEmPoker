@@ -23,6 +23,7 @@ public class SimplePlayer implements Player {
     private boolean isDealer;
     private boolean isBigBlind;
     private boolean isSmallBlind;
+    private int betOrder;
 
     public SimplePlayer() {
         this.hand = new SimpleHand();
@@ -117,6 +118,11 @@ public class SimplePlayer implements Player {
     @Override
     public boolean getIsDealer() {
         return this.isDealer;
+    }
+
+    @Override
+    public void setBetOrder(int betOrder) {
+        this.betOrder = betOrder;
     }
 
 }

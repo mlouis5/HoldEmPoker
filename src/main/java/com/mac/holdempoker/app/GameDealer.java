@@ -18,7 +18,5 @@ public interface GameDealer {
     
     void dealAround();
     
-    void dealFlop() throws InvalidBoardException;
-    void dealTurn() throws InvalidBoardException;
-    void dealRiver() throws InvalidBoardException;
+    void dealBoard() throws InvalidBoardException;
 }

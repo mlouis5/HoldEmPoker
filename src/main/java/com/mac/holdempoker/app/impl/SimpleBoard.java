@@ -11,7 +11,6 @@ import com.mac.holdempoker.app.util.BoardObserver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  *
@@ -19,55 +18,46 @@ import java.util.Objects;
  */
 public class SimpleBoard implements Board {
 
-    private Card[] flop;
-    private Card turn;
-    private Card river;
+    private List<Card> board;
     
     public SimpleBoard(){
-        flop = new Card[3];
-        turn = null;
-        river = null;
+        board = new ArrayList();
     }
     
     @Override
     public Card[] getFlop() {
-        return flop;
+        if(board.size() < 3){
+            return null;
+        }
+        return board.subList(0, 3).toArray(new Card[3]);
     }
 
     @Override
     public Card getTurn() {
-        return turn;
+        if(board.size() < 4){
+            return null;
+        }
+        return board.get(3);
     }
 
     @Override
     public Card getRiver() {
-        return river;
+        if(board.size() < 5){
+            return null;
+        }
+        return board.get(4);
     }
 
     @Override
-    public void setFlop(Card[] flop) {
-        if(Objects.nonNull(flop) && flop.length == 3){
-            this.flop = flop;
+    public void dealToBoard(Card... cards) {
+        if(board.size() < 5){
+            board.addAll(Arrays.asList(cards));
         }
     }
 
     @Override
-    public void setTurn(Card turnCard) {
-        this.turn = turnCard;
-    }
-
-    @Override
-    public void setRiver(Card riverCard) {
-        this.river = riverCard;
-    }
-
-    @Override
-    public Card[] getCommunityCards() {
-        List<Card> community = new ArrayList();
-        community.addAll(Arrays.asList(flop));
-        community.add(turn);
-        community.add(river);
-        return community.toArray(new Card[5]);
+    public Card[] getBoard() {
+        return board.toArray(new Card[5]);
     }
 
     @Override
@@ -78,6 +68,11 @@ public class SimpleBoard implements Board {
     @Override
     public void notifyObservers() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void resetBoard() {
+        board.clear();
     }
     
 }

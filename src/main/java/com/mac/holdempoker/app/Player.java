@@ -47,4 +47,5 @@ public interface Player extends BoardObserver{
     
     boolean getIsDealer();
     
+    void setBetOrder(int betOrder);
 }

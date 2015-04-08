@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author MacDerson
  */
-public interface DealOrder {
+public interface PlayerOrder {
         
     List<Player> getDealOrder();
 }

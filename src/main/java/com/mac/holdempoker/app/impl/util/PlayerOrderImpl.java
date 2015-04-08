@@ -6,7 +6,7 @@
 package com.mac.holdempoker.app.impl.util;
 
 import com.mac.holdempoker.app.Card;
-import com.mac.holdempoker.app.DealOrder;
+import com.mac.holdempoker.app.PlayerOrder;
 import com.mac.holdempoker.app.Deck;
 import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.enums.Rank;
@@ -26,14 +26,14 @@ import java.util.TreeMap;
  *
  * @author MacDerson
  */
-public class DealOrderImpl implements DealOrder, Comparator<Card> {
+public class PlayerOrderImpl implements PlayerOrder, Comparator<Card> {
 
     private boolean isOrdered;
     private List<Player> orderedPlayers;
     private int pointer;
 
-    public DealOrderImpl(List<Player> players) {
-        pointer = -1;
+    public PlayerOrderImpl(List<Player> players) {
+        pointer = 0;
         isOrdered = false;
         orderPlayers(players);
     }
@@ -47,14 +47,17 @@ public class DealOrderImpl implements DealOrder, Comparator<Card> {
             for (Player p : players) {
                 dealOrder.put(d.drawNextCard(), p);
             }
-            List<Player> plyrs = new ArrayList(dealOrder.values());
-            Collections.reverse(plyrs);
-            orderedPlayers = new ArrayList(plyrs.size());
 
+            List<Player> plyrs = new ArrayList(dealOrder.values());
+            orderedPlayers = new ArrayList(plyrs.size());
             int playerNumber = 1;
+            orderedPlayers.add(plyrs.remove(plyrs.size() - 1));
+            orderedPlayers.get(0).setPlayerNumber(playerNumber++);
+            Collections.reverse(plyrs);
+            
             for (Player p : plyrs) {
                 p.setPlayerNumber(playerNumber++);
-                orderedPlayers.add(p);
+                orderedPlayers.add(0, p);
             }
         }
     }
@@ -62,15 +65,14 @@ public class DealOrderImpl implements DealOrder, Comparator<Card> {
     @Override
     public List<Player> getDealOrder() {
         resetDealerAndBlinds();
-        
-        movePointer();
-        orderedPlayers.get(pointer).setIsDealer(true);
-        movePointer();
-        orderedPlayers.get(pointer).setIsSmallBlind(true);
-        movePointer();
-        orderedPlayers.get(pointer).setIsBigBlind(true);
-        isOrdered = true;
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Collections.rotate(orderedPlayers, 1);
+        orderedPlayers.get(getPointer()).setIsDealer(true);
+        orderedPlayers.get(getPointer()).setIsSmallBlind(true);
+        orderedPlayers.get(getPointer()).setIsBigBlind(true);
+        for(int i = 0; i < orderedPlayers.size(); i++){
+            orderedPlayers.get(getPointer()).setBetOrder((i+1));
+        }
+        return new ArrayList(orderedPlayers);
     }
 
     @Override
@@ -78,16 +80,16 @@ public class DealOrderImpl implements DealOrder, Comparator<Card> {
         return o1.compareTo(o2);
     }
 
-    private void movePointer() {
+    private int getPointer() {
         if (Objects.isNull(orderedPlayers)) {
-            pointer = -1;
-            return;
+            throw new NullPointerException("orderedPlayers is null");
         }
-        pointer = (pointer + 1) < orderedPlayers.size() ? pointer++ : 0;
+        return pointer = (pointer + 1) < orderedPlayers.size() ? pointer++ : 0;
     }
-    
-    private void resetDealerAndBlinds(){
-        for(Player p : orderedPlayers){
+
+    private void resetDealerAndBlinds() {
+        pointer = 0;
+        for (Player p : orderedPlayers) {
             p.setIsDealer(false);
             p.setIsSmallBlind(false);
             p.setIsBigBlind(false);
