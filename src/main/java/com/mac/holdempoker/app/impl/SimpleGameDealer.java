@@ -55,7 +55,7 @@ public class SimpleGameDealer implements GameDealer {
 
     @Override
     public void dealAround() {
-        deck.validateDeck();
+        deck.buildDeck();
         deck.shuffleDeck();
         List<Player> allPlayers = dealOrder.getDealOrder();
 

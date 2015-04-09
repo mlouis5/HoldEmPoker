@@ -25,11 +25,15 @@ public class RoundHandlerImpl implements RoundHandler {
 
     private final Map<Player, List<Action>> playerActions;
     private final List<Round> rounds;
+    private List<Player> players;
 
-    public RoundHandlerImpl() {
+    public RoundHandlerImpl(List<Player> players) {
         playerActions = new HashMap();
-        rounds = new ArrayList();
-        rounds.add(new SimpleRound());
+        rounds = new ArrayList();        
+        this.players = players;
+        Round r = new SimpleRound();
+        r.setPlayersInRound(players);
+        rounds.add(r);
     }
 
     @Override
@@ -40,6 +44,8 @@ public class RoundHandlerImpl implements RoundHandler {
     @Override
     public void newRound() {
         if (rounds.size() < 4) {
+            Round r = new SimpleRound();
+            r.setPlayersInRound(players);
             rounds.add(new SimpleRound());
         }
     }

@@ -78,7 +78,7 @@ public class HandMatrix implements Comparator<Card> {
             for (Method method : methods) {
                 method.setAccessible(true);
                 String methodName = method.getName();
-                System.out.println(methodName);
+//                System.out.println(methodName);
                 Matcher m = METHOD_PATTERN.matcher(methodName);
                 if (m.matches()) {
                     Object[] args = null;
@@ -167,21 +167,25 @@ public class HandMatrix implements Comparator<Card> {
      */
     private HandRank cHandRank() {
         Rank[] qRank = getRanksWithCount(4, 1);
+        System.out.println("qRank: " + Arrays.toString(qRank));
         if (qRank.length != 1) {
             return null;
         }
-        Rank r = qRank[0];
-        List<Suit> suits = getSuitsForRank(r);
-        Card[] cards = new Card[5];
+//        Rank r = null;//qRank[0];
+        List<Card> cards = new ArrayList(5);
         int index = 0;
-        for (Suit suit : suits) {
-            cards[index++] = makeCard(suit, r);
+        for (Suit suit : Suit.values()) {
+            cards.add(makeCard(suit, qRank[index]));
         }
-        Rank hRank = getHighestSingleRank();
-        suits = getSuitsForRank(r);
-        cards[index] = makeCard(suits.get(0), hRank);
-        Arrays.sort(cards, this);
-        return new SimpleHandRank(HandType.FOUR_OF_A_KIND, cards);
+        Rank r = getHighestRankNotEqualTo(qRank[0]);
+        System.out.println("singleRank: " + r);
+        if (Objects.isNull(r)) {
+            return null;
+        }
+        List<Suit> suits = getSuitsForRank(r);
+        cards.add(makeCard(suits.get(0), r));
+        Collections.sort(cards, this);
+        return new SimpleHandRank(HandType.FOUR_OF_A_KIND, cards.toArray(new Card[5]));
     }
 
     /**
@@ -199,7 +203,7 @@ public class HandMatrix implements Comparator<Card> {
         ArrayUtils.reverse(qRank);
         for (Rank r : qRank) {
             List<Suit> suits = getSuitsForRank(r);
-            System.out.println(suits);
+//            System.out.println(suits);
             for (Suit suit : suits) {
                 cards.add(makeCard(suit, r));
                 if(cards.size() == 5){
@@ -209,11 +213,9 @@ public class HandMatrix implements Comparator<Card> {
             }
         }
         qRank = getRanksWithCount(2, 1);
-        if (qRank.length < 1) {
+        if (qRank.length != 1) {
             return null;
         }
-        Arrays.sort(qRank, rc);
-        ArrayUtils.reverse(qRank);
         for (Rank r : qRank) {
             List<Suit> suits = getSuitsForRank(r);
             for (Suit suit : suits) {
@@ -319,7 +321,7 @@ public class HandMatrix implements Comparator<Card> {
         ArrayUtils.reverse(qRank);
         for (Rank r : qRank) {
             List<Suit> suits = getSuitsForRank(r);
-            System.out.println(suits);
+//            System.out.println(suits);
             for (Suit suit : suits) {
                 cards.add(makeCard(suit, r));
                 if(cards.size() == 5){
@@ -429,6 +431,15 @@ public class HandMatrix implements Comparator<Card> {
 //        }
 //        return hr;
 //    }
+    private Rank getHighestRankNotEqualTo(Rank r){
+        Rank rank = this.getHighestRank();
+        
+        if(rank == r){
+            rank = this.getNextHighestRank(rank);
+        }
+        return rank;
+    }
+    
     private Rank[] getRanksWithCount(int count, int amount) {
         List<Rank> foundRanks = new ArrayList(1);
 
@@ -451,21 +462,21 @@ public class HandMatrix implements Comparator<Card> {
         return foundRanks.toArray(new Rank[foundRanks.size()]);
     }
 
-//    private Rank getHighestRank() {
-//        Rank highestRank = null;
-//        for (Entry<Rank, Integer> entry : rankHistogram.entrySet()) {
-//            if (entry.getValue() >= 1) {
-//                if (Objects.isNull(highestRank)) {
-//                    highestRank = entry.getKey();
-//                } else {
-//                    if (entry.getKey().value() > highestRank.value()) {
-//                        highestRank = entry.getKey();
-//                    }
-//                }
-//            }
-//        }
-//        return highestRank;
-//    }
+    private Rank getHighestRank() {
+        Rank highestRank = null;
+        for (Entry<Rank, Integer> entry : rankHistogram.entrySet()) {
+            if (entry.getValue() >= 1) {
+                if (Objects.isNull(highestRank)) {
+                    highestRank = entry.getKey();
+                } else {
+                    if (entry.getKey().value() > highestRank.value()) {
+                        highestRank = entry.getKey();
+                    }
+                }
+            }
+        }
+        return highestRank;
+    }
     private Rank getHighestSingleRank() {
         Rank highestRank = null;
         for (Entry<Rank, Integer> entry : rankHistogram.entrySet()) {
@@ -482,28 +493,28 @@ public class HandMatrix implements Comparator<Card> {
         return highestRank;
     }
 
-//    private Rank getNextHighestRank(Rank rank) {
-//        Rank nextHighestRank = null;
-//        Set<Rank> keys = rankHistogram.keySet();
-//        Rank[] ranks = keys.toArray(new Rank[keys.size()]);
-//        ArrayUtils.reverse(ranks);
-//
-//        for (Rank r : ranks) {
-//            Integer val = rankHistogram.get(r);
-//            if (Objects.nonNull(val)) {
-//                if (val >= 1) {
-//                    if (Objects.isNull(nextHighestRank)) {
-//                        nextHighestRank = r;
-//                    } else {
-//                        if (r.value() < rank.value()) {
-//                            return r;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        return nextHighestRank;
-//    }
+    private Rank getNextHighestRank(Rank rank) {
+        Rank nextHighestRank = null;
+        Set<Rank> keys = rankHistogram.keySet();
+        Rank[] ranks = keys.toArray(new Rank[keys.size()]);
+        ArrayUtils.reverse(ranks);
+
+        for (Rank r : ranks) {
+            Integer val = rankHistogram.get(r);
+            if (Objects.nonNull(val)) {
+                if (val >= 1) {
+                    if (Objects.isNull(nextHighestRank)) {
+                        nextHighestRank = r;
+                    } else {
+                        if (r.value() < rank.value()) {
+                            return r;
+                        }
+                    }
+                }
+            }
+        }
+        return nextHighestRank;
+    }
     private List<Suit> getSuitsForRank(Rank rank) {
         List<Suit> suites = new ArrayList();
         for (Entry<Suit, Rank[]> entry : hand.entrySet()) {
@@ -571,7 +582,7 @@ public class HandMatrix implements Comparator<Card> {
 
         int i;
         int rIndex;
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < ranks.length; i++) {
             Rank r = ranks[i];
             rIndex = ArrayUtils.indexOf(ranks, Rank.getRank(i + 2));
             if (rIndex >= 0) {

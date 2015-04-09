@@ -17,12 +17,15 @@ import java.util.Objects;
 public class SimpleCard implements Card {
 
     private final Suit suit;
-    private final Rank value;
+    private final Rank rank;
     private boolean isBurned;
 
-    public SimpleCard(Suit suit, Rank value) {
+    public SimpleCard(Suit suit, Rank rank) {
+        if(Objects.isNull(suit) || Objects.isNull(rank)){
+            throw new NullPointerException("Card, my not have null Suit: " + suit + " null Rank: " + rank);
+        }
         this.suit = suit;
-        this.value = value;
+        this.rank = rank;
     }
 
     @Override
@@ -32,7 +35,7 @@ public class SimpleCard implements Card {
 
     @Override
     public Rank getRank() {
-        return value;
+        return rank;
     }
 
     @Override
@@ -53,7 +56,7 @@ public class SimpleCard implements Card {
     public int hashCode() {
         int hash = 5;
         hash = 47 * hash + Objects.hashCode(this.suit);
-        hash = 47 * hash + Objects.hashCode(this.value);
+        hash = 47 * hash + Objects.hashCode(this.rank);
         return hash;
     }
 
@@ -66,17 +69,20 @@ public class SimpleCard implements Card {
             return false;
         }
         final SimpleCard other = (SimpleCard) obj;
-        return Objects.equals(suit, other.suit) && Objects.equals(value, other.value);
+        return Objects.equals(suit, other.suit) && Objects.equals(rank, other.rank);
     }
 
     @Override
     public String print() {
-        return (Objects.nonNull(suit) && Objects.nonNull(value)) ? suit.initial() + ":" + value.rank() : ":";
+        return (Objects.nonNull(suit) && Objects.nonNull(rank)) ? suit.initial() + ":" + rank.rank() : ":";
     }
 
     @Override
     public int compareTo(Card o) {
-        return this.value.value() - o.getRank().value();
+        if(Objects.isNull(o)){
+            return -1;
+        }  
+        return this.rank.value() - o.getRank().value();
     }
 
     @Override

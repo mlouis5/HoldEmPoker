@@ -24,7 +24,7 @@ public class SimpleDeck implements Deck {
     
     public SimpleDeck(){
         deck = new ArrayList(CARDS_IN_DECK);
-        validateDeck();
+        buildDeck();
         shuffleDeck();
     }    
     
@@ -72,7 +72,7 @@ public class SimpleDeck implements Deck {
     }
 
     @Override
-    public final void validateDeck() {
+    public final void buildDeck() {
         Suit[] suits = Suit.values();
         Rank[] values = Rank.values();
         

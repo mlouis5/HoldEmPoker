@@ -19,7 +19,7 @@ public interface Deck extends Serializable{
     
     void shuffleDeck();
     
-    void validateDeck();
+    void buildDeck();
     
     Card[] drawNumCards(int numCards);
 }

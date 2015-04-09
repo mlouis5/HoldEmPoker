@@ -42,7 +42,7 @@ public class PlayerOrderImpl implements PlayerOrder, Comparator<Card> {
         if (!isOrdered) {
             Map<Card, Player> dealOrder = new TreeMap(this);
             Deck d = new SimpleDeck();
-            d.validateDeck();
+            d.buildDeck();
             d.shuffleDeck();
             for (Player p : players) {
                 dealOrder.put(d.drawNextCard(), p);
