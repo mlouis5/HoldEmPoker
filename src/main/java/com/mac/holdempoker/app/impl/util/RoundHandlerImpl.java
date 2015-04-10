@@ -6,9 +6,11 @@
 package com.mac.holdempoker.app.impl.util;
 
 import com.mac.holdempoker.app.Action;
+import com.mac.holdempoker.app.MonetaryAction;
 import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.Round;
 import com.mac.holdempoker.app.RoundHandler;
+import com.mac.holdempoker.app.enums.ActionName;
 import com.mac.holdempoker.app.exceptions.InvalidActionException;
 import com.mac.holdempoker.app.impl.SimpleRound;
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class RoundHandlerImpl implements RoundHandler {
 
     public RoundHandlerImpl(List<Player> players) {
         playerActions = new HashMap();
-        rounds = new ArrayList();        
+        rounds = new ArrayList();
         this.players = players;
         Round r = new SimpleRound();
         r.setPlayersInRound(players);
@@ -38,7 +40,8 @@ public class RoundHandlerImpl implements RoundHandler {
 
     @Override
     public void reset() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        playerActions.clear();
+        rounds.clear();
     }
 
     @Override
@@ -58,7 +61,7 @@ public class RoundHandlerImpl implements RoundHandler {
         List<Action> pActions = playerActions.get(action.getActingPlayer());
         if (Objects.nonNull(pActions)) {
             pActions.add(action);
-        }else{
+        } else {
             pActions = new ArrayList();
             pActions.add(action);
         }
@@ -67,6 +70,34 @@ public class RoundHandlerImpl implements RoundHandler {
     @Override
     public void assessCurrentRound() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void handleAction(Action action) {
+        Player p = action.getActingPlayer();
+
+        Player pInRound = currentRound().getPlayer(p);
+        if (Objects.nonNull(pInRound)) {
+            ActionName an = action.getActionName();
+
+            switch (an) {
+                case FOLD: {
+                    currentRound().getPlayersInRound().remove(pInRound);
+                }
+                case BET:
+                case RAISE: {
+                    MonetaryAction ma = (MonetaryAction) action;
+                    int amt = ma.getAmount();
+                    currentRound().getCurrentPot().increasePot(amt);
+                    if ((pInRound.getStack() - amt) == 0) {
+                        pInRound.setIsAllIn(true);
+                    }
+                }
+            }
+        }
+    }
+
+    private Round currentRound() {
+        return rounds.get(rounds.size() - 1);
     }
 
 }

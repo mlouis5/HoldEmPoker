@@ -37,6 +37,10 @@ public interface Player extends BoardObserver{
     
     void resetHand();
     
+    void setStack(int stack);
+    
+    int getStack();
+    
     void decreaseStack(int amount);
     
     void increaseStack(int amount);
@@ -66,4 +70,12 @@ public interface Player extends BoardObserver{
     void setAction(Action action);
     
     Action getAction();
+    
+    boolean getIsAllIn();
+    
+    void setIsAllIn(boolean isAllIn);
+    
+    void setAvailableActions(Action... possibleActions);
+    
+    Action[] getAvailableActions();
 }

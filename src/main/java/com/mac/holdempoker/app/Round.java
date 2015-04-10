@@ -30,4 +30,8 @@ public interface Round {
     boolean getHasDefaultWinner();
     
     Player getDefaultWinners();
+    
+    Pot getCurrentPot();
+    
+    Player getPlayer(Player p);
 }

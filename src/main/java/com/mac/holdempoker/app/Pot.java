@@ -5,11 +5,17 @@
  */
 package com.mac.holdempoker.app;
 
+import com.mac.holdempoker.app.enums.PotName;
+
 /**
  *
  * @author MacDerson
  */
 public interface Pot{
+    
+    void setPotName(PotName potName);
+    
+    PotName getPotName();
 
     void increasePot(int amount);
     
