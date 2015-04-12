@@ -7,6 +7,7 @@ package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.Pot;
+import com.mac.holdempoker.app.enums.PotName;
 
 /**
  *
@@ -15,6 +16,7 @@ import com.mac.holdempoker.app.Pot;
 public class SimplePot implements Pot{
 
     private int potAmount;
+    private PotName potName;
     
     public SimplePot(){
         potAmount = 0;
@@ -36,4 +38,14 @@ public class SimplePot implements Pot{
     public void clearPot() {
         this.potAmount = 0;
     } 
+
+    @Override
+    public void setPotName(PotName potName) {
+        this.potName = potName;
+    }
+
+    @Override
+    public PotName getPotName() {
+        return potName;
+    }
 }

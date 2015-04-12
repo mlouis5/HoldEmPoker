@@ -27,11 +27,18 @@ public class SimplePlayer implements Player {
     private boolean isDealer;
     private boolean isBigBlind;
     private boolean isSmallBlind;
+    private boolean isAllIn;
     private int actionOrder;
     private Action action;
+    private Action[] availableActions;
 
     public SimplePlayer() {
         this.hand = new SimpleHand();
+        this.isAllIn = false;
+        this.isDealer = false;
+        this.isBigBlind = false;
+        this.isSmallBlind = false;
+        this.chipStack = -1;
     }
 
     @Override
@@ -198,6 +205,38 @@ public class SimplePlayer implements Player {
                 && Objects.equals(this.playerLastName, other.playerLastName)
                 && Objects.equals(this.playerEmail, other.playerEmail)
                 && Objects.equals(this.playerId, other.playerId);
+    }
+
+    @Override
+    public boolean getIsAllIn() {
+        return isAllIn;
+    }
+
+    @Override
+    public void setIsAllIn(boolean isAllIn) {
+        this.isAllIn = isAllIn;
+    }
+
+    @Override
+    public void setStack(int stack) {
+        if(chipStack == -1 && stack > 0){
+            chipStack = stack;
+        }
+    }
+
+    @Override
+    public int getStack() {
+        return chipStack;
+    }
+
+    @Override
+    public void setAvailableActions(Action... possibleActions) {
+        this.availableActions = possibleActions;
+    }
+
+    @Override
+    public Action[] getAvailableActions() {
+        return availableActions;
     }
 
 }
