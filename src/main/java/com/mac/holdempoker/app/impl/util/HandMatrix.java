@@ -111,7 +111,7 @@ public class HandMatrix implements Comparator<Card> {
         HandRank hr = bHandRank();
         if (Objects.nonNull(hr)) {
             Card[] cards = hr.getHand();
-            Arrays.sort(cards, this);
+//            Arrays.sort(cards, this);
             if (cards[cards.length - 1].getRank().value() == 14
                     && cards[0].getRank().value() == 10) {
                 return new SimpleHandRank(HandType.ROYAL_FLUSH, cards);
@@ -129,11 +129,11 @@ public class HandMatrix implements Comparator<Card> {
         HandRank hr = eHandRank();
         if (Objects.nonNull(hr)) {
             Card[] cards = hr.getHand();
-            Arrays.sort(cards, this);
+//            Arrays.sort(cards, this);
             if (isConsecutive(cards)) {
                 return new SimpleHandRank(HandType.STRAIGHT_FLUSH, cards);
             } else {
-                Entry<Suit, Rank[]> flush = getFlushSuit();
+                Entry<Suit, Rank[]> flush = getFlushEntry();
                 List<Card> wheel = new ArrayList();
                 int i = 0;
                 Rank[] posWheel = Arrays.copyOf(flush.getValue(), flush.getValue().length);
@@ -167,7 +167,7 @@ public class HandMatrix implements Comparator<Card> {
      */
     private HandRank cHandRank() {
         Rank[] qRank = getRanksWithCount(4, 1);
-        System.out.println("qRank: " + Arrays.toString(qRank));
+//        System.out.println("qRank: " + Arrays.toString(qRank));
         if (qRank.length != 1) {
             return null;
         }
@@ -178,7 +178,7 @@ public class HandMatrix implements Comparator<Card> {
             cards.add(makeCard(suit, qRank[index]));
         }
         Rank r = getHighestRankNotEqualTo(qRank[0]);
-        System.out.println("singleRank: " + r);
+//        System.out.println("singleRank: " + r);
         if (Objects.isNull(r)) {
             return null;
         }
@@ -235,7 +235,7 @@ public class HandMatrix implements Comparator<Card> {
      * @return
      */
     private HandRank eHandRank() {
-        Entry<Suit, Rank[]> flush = getFlushSuit();
+        Entry<Suit, Rank[]> flush = getFlushEntry();
         if (Objects.isNull(flush)) {
             return null;
         }
@@ -536,7 +536,7 @@ public class HandMatrix implements Comparator<Card> {
         return suit;
     }
 
-    private Entry<Suit, Rank[]> getFlushSuit() {
+    private Entry<Suit, Rank[]> getFlushEntry() {
         for (Entry<Suit, Rank[]> entry : hand.entrySet()) {
             int count = 0;
             Rank[] ranks = entry.getValue();
