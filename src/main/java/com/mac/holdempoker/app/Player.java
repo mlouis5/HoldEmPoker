@@ -6,6 +6,7 @@
 package com.mac.holdempoker.app;
 
 import com.mac.holdempoker.app.util.BoardObserver;
+import java.util.List;
 
 /**
  *
@@ -46,6 +47,8 @@ public interface Player extends BoardObserver{
     void increaseStack(int amount);
     
     boolean isEliminated();
+    
+    Card[] getHoleCards();
     
     void haveHoleCard(Card card);
     

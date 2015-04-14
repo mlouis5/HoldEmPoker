@@ -5,8 +5,10 @@
  */
 package com.mac.holdempoker.app.impl.util;
 
+import com.mac.holdempoker.app.Board;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.HandRank;
+import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.enums.HandType;
 import com.mac.holdempoker.app.enums.Rank;
 import com.mac.holdempoker.app.enums.Suit;
@@ -45,6 +47,19 @@ public class HandMatrix implements Comparator<Card> {
         hand = new HashMap();
         rankHistogram = new HashMap();
         rc = new RankComparator();
+    }
+    
+    public HandRank getHand(Player p, Board b) throws InvalidHandException, 
+            IllegalAccessException, IllegalArgumentException, 
+            InvocationTargetException{
+        Card[] holeCards = p.getHoleCards();
+        Card[] board = b.getBoard();
+        
+        Card[] c = ArrayUtils.addAll(board, holeCards);
+        Arrays.stream(c).forEach((card) -> {
+            haveCard(card);
+        });        
+        return getHand();
     }
 
     public void haveCard(Card card) {
@@ -416,21 +431,6 @@ public class HandMatrix implements Comparator<Card> {
         return ranks.toArray(new Rank[ranks.size()]);
     }
 
-//    private Rank findHighestRank(Rank... ranks) {
-//        Rank hr = null;
-//        for (Rank r : ranks) {
-//            if (Objects.nonNull(r)) {
-//                if (Objects.isNull(hr)) {
-//                    hr = r;
-//                } else {
-//                    if (r.value() > hr.value()) {
-//                        hr = r;
-//                    }
-//                }
-//            }
-//        }
-//        return hr;
-//    }
     private Rank getHighestRankNotEqualTo(Rank r){
         Rank rank = this.getHighestRank();
         
@@ -515,6 +515,7 @@ public class HandMatrix implements Comparator<Card> {
         }
         return nextHighestRank;
     }
+    
     private List<Suit> getSuitsForRank(Rank rank) {
         List<Suit> suites = new ArrayList();
         for (Entry<Suit, Rank[]> entry : hand.entrySet()) {

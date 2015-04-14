@@ -9,6 +9,7 @@ import com.mac.holdempoker.app.Action;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Hand;
 import com.mac.holdempoker.app.Player;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -237,6 +238,11 @@ public class SimplePlayer implements Player {
     @Override
     public Action[] getAvailableActions() {
         return availableActions;
+    }
+
+    @Override
+    public Card[] getHoleCards() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
