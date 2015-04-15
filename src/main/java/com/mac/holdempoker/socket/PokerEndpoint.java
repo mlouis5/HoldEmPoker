@@ -24,6 +24,7 @@ public class PokerEndpoint extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket ws, ClientHandshake ch) {
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

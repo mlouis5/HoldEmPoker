@@ -5,22 +5,82 @@
  */
 package com.mac.holdempoker.game.impl;
 
+import com.mac.holdempoker.app.PlayOrder;
 import com.mac.holdempoker.app.Board;
+import com.mac.holdempoker.app.Deck;
 import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.Pot;
+import com.mac.holdempoker.app.impl.SimpleBoard;
+import com.mac.holdempoker.app.impl.SimpleDeck;
+import com.mac.holdempoker.app.impl.SimplePlayOrder;
+import com.mac.holdempoker.app.impl.SimplePlayer;
+import com.mac.holdempoker.socket.utilities.JsonConverter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Represents the state of a poker game at an prior to or after an action is taken.
  * @author Mac
  */
 public class GameState {
     
-    private Player actingPlayer;
-    
-    private List<Player> players;
+    private PlayOrder playOrder;
     
     private List<Pot> pots;
     
     private Board board;
+    
+    public void setPlayOrder(PlayOrder po){
+        this.playOrder = po;
+    }
+    
+    public PlayOrder getPlayOrder(){
+        return playOrder;
+    }
+    
+    public void setPots(List<Pot> pots){
+        this.pots = pots;
+    }
+    
+    public List<Pot> getPots(){
+        return pots;
+    }
+    
+    public void setBoard(Board board){
+        this.board = board;
+    }
+    
+    public Board getBoard(){
+        return board;
+    }
+    
+    public static void main(String[] args) throws IOException{
+        GameState gs = new GameState();
+        
+        Board b = new SimpleBoard();
+        Deck d = new SimpleDeck();
+        d.buildDeck();
+        d.shuffleDeck();
+        b.dealToBoard(d.drawNumCards(3));
+        d.burnCard();
+        b.dealToBoard(d.drawNextCard());
+        d.burnCard();
+        b.dealToBoard(d.drawNextCard());
+        
+        gs.setBoard(b);
+        
+        List<Player> plyrs = new ArrayList();
+        plyrs.add(new SimplePlayer());
+        plyrs.add(new SimplePlayer());
+        plyrs.add(new SimplePlayer());
+        plyrs.add(new SimplePlayer());
+        
+        PlayOrder po = new SimplePlayOrder(plyrs);
+        po.order();
+        
+        gs.setPlayOrder(po);
+        
+        System.out.println(JsonConverter.toJsonString(gs));
+    }
 }

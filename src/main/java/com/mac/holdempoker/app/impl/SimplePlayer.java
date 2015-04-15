@@ -9,6 +9,7 @@ import com.mac.holdempoker.app.Action;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Hand;
 import com.mac.holdempoker.app.Player;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +23,7 @@ public class SimplePlayer implements Player {
     private String playerLastName;
     private String playerEmail;
     private String playerId;
+    private List<Card> holeCards;
     private final Hand hand;
     private int pNumber;
     private int chipStack;
@@ -40,6 +42,7 @@ public class SimplePlayer implements Player {
         this.isBigBlind = false;
         this.isSmallBlind = false;
         this.chipStack = -1;
+        this.holeCards = new ArrayList();
     }
 
     @Override
@@ -85,6 +88,7 @@ public class SimplePlayer implements Player {
 
     @Override
     public void haveHoleCard(Card card) {
+        holeCards.add(card);
         hand.addToHand(card);
     }
 
@@ -220,7 +224,7 @@ public class SimplePlayer implements Player {
 
     @Override
     public void setStack(int stack) {
-        if(chipStack == -1 && stack > 0){
+        if (chipStack == -1 && stack > 0) {
             chipStack = stack;
         }
     }
@@ -242,7 +246,7 @@ public class SimplePlayer implements Player {
 
     @Override
     public Card[] getHoleCards() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return holeCards.toArray(new Card[2]);
     }
 
 }

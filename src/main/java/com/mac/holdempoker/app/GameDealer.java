@@ -6,6 +6,7 @@
 package com.mac.holdempoker.app;
 
 import com.mac.holdempoker.app.exceptions.InvalidBoardException;
+import java.util.List;
 
 /**
  *
@@ -14,7 +15,14 @@ import com.mac.holdempoker.app.exceptions.InvalidBoardException;
 public interface GameDealer {
     
     void setBoard(Board board);
-    void setPlayers(Player... players);
+    
+    Board getBoard();
+    
+    void setPlayers(List<Player> players);
+    
+    List<Player> getPlayers();
+    
+    PlayOrder getPlayOrder();
     
     void dealAround();
     

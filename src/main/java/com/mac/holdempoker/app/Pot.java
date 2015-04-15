@@ -17,9 +17,15 @@ public interface Pot{
     
     PotName getPotName();
 
-    void increasePot(int amount);
+    void increasePot(MonetaryAction action);
+    
+    int getMinBetAmount();
+    
+    int getMinRaiseAmount();
     
     int getPotAmount();
     
     void clearPot();
+    
+    public int getPlayerPotCommitment(Player p);
 }
