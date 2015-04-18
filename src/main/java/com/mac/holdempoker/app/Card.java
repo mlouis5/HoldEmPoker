@@ -26,4 +26,6 @@ public interface Card extends Printable, Serializable, Comparable<Card> {
     public boolean isSameSuit(Card card);
     
     public boolean isSameFaceValue(Card card);
+    
+    public String getCardString();
 }

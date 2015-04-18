@@ -19,13 +19,15 @@ public class SimpleCard implements Card {
     private final Suit suit;
     private final Rank rank;
     private boolean isBurned;
+    private String cardString;
 
     public SimpleCard(Suit suit, Rank rank) {
-        if(Objects.isNull(suit) || Objects.isNull(rank)){
+        if (Objects.isNull(suit) || Objects.isNull(rank)) {
             throw new NullPointerException("Card, my not have null Suit: " + suit + " null Rank: " + rank);
         }
         this.suit = suit;
         this.rank = rank;
+        cardString = this.rank.name().toLowerCase() + "_of_" + this.suit.name().toLowerCase() + "s";
     }
 
     @Override
@@ -46,7 +48,7 @@ public class SimpleCard implements Card {
     public void setIsBurned(boolean isBurned) {
         this.isBurned = isBurned;
     }
-    
+
     @Override
     public void reset() {
         this.isBurned = false;
@@ -79,9 +81,9 @@ public class SimpleCard implements Card {
 
     @Override
     public int compareTo(Card o) {
-        if(Objects.isNull(o)){
+        if (Objects.isNull(o)) {
             return -1;
-        }  
+        }
         return this.rank.value() - o.getRank().value();
     }
 
@@ -94,9 +96,14 @@ public class SimpleCard implements Card {
     public boolean isSameFaceValue(Card card) {
         return this.getRank() == card.getRank();
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return print();
+    }
+
+    @Override
+    public String getCardString() {
+        return cardString;
     }
 }

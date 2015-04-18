@@ -10,21 +10,15 @@ package com.mac.holdempoker.app.enums;
  * @author Mac
  */
 public enum Suit {
-    DIAMOND("D", 1), CLUB("C", 10), SPADE("S", 100), HEART("H", 1000);
+    DIAMOND("D"), CLUB("C"), SPADE("S"), HEART("H");
     
     private String init;
-    private int suitValue;
     
-    Suit(String init, int val){
+    Suit(String init){
         this.init = init;
-        this.suitValue = val;
     }
     
     public String initial(){
         return init;
-    }
-    
-    public int suitValue(){
-        return suitValue;
-    }
+    }    
 }
