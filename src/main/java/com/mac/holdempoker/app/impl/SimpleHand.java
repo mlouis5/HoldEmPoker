@@ -5,14 +5,15 @@
  */
 package com.mac.holdempoker.app.impl;
 
+import com.mac.holdempoker.app.Board;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Hand;
-import com.mac.holdempoker.app.HandRank;
-import com.mac.holdempoker.app.enums.HandType;
-import com.mac.holdempoker.app.exceptions.InvalidHandException;
-import com.mac.holdempoker.app.impl.util.HandMatrix;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
+import com.mac.holdempoker.app.Player;
+import com.mac.holdempoker.app.hands.AbstractHand;
+import com.mac.holdempoker.app.hands.HandEvaluator;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,55 +21,20 @@ import org.springframework.stereotype.Component;
  * @author MacDerson
  */
 @Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SimpleHand implements Hand {
 
-    private final HandMatrix matrix;
+    private final HandEvaluator evaluator;
 
-    public SimpleHand() {
-        matrix = new HandMatrix();
+    public SimpleHand(Player p, Board b) 
+            throws IllegalAccessException, Exception {        
+        evaluator = new HandEvaluator();
+        Card[] cards = ArrayUtils.addAll(p.getHoleCards(), b.getBoard());
+        evaluator.haveCards(cards);
     }
 
     @Override
-    public Card[] getHand() throws Exception {
-        HandRank hr = matrix.getHand();
-        if (Objects.nonNull(hr)) {
-            return hr.getHand();
-        }
-        throw new InvalidHandException("Unable to obtain a valid hand");
-    }
-
-    @Override
-    public void addToHand(Card card) {
-        matrix.haveCard(card);
-    }
-
-    @Override
-    public HandType getHandType() throws Exception {
-        HandRank hr = matrix.getHand();
-        if (Objects.nonNull(hr)) {
-            return hr.getHandType();
-        }
-        throw new InvalidHandException("Unable to obtain a valid HandType");
-    }
-
-    @Override
-    public void haveSharedCards(Card... cards) {
-        if (Objects.nonNull(cards)) {
-            for (Card card : cards) {
-                matrix.haveCard(card);
-            }
-        }
-    }
-
-    @Override
-    public void clearHand() {
-        matrix.clearHand();
-    }
-
-    @Override
-    public HandRank getHandRank() throws InvalidHandException,
-            IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException {
-        return matrix.getHand();
+    public AbstractHand getHand() throws Exception {
+        return evaluator.evaluateHand();
     }
 }

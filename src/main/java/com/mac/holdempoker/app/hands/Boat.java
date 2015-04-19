@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.app.impl.util;
+package com.mac.holdempoker.app.hands;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.enums.HandType;
@@ -18,20 +18,20 @@ import org.apache.commons.lang3.ArrayUtils;
  *
  * @author Mac
  */
-public class TwoPair extends AbstractHand {
+public class Boat extends AbstractHand {
 
     Map<Rank, Card[]> cards;
     private int insertSize;
 
-    public TwoPair() {
-        super(HandType.TWO_PAIR);
+    public Boat() {
+        super(HandType.FULL_HOUSE);
         cards = new TreeMap(this);
     }
 
     @Override
     public Card[] getHand() {
         if(Objects.isNull(super.getFinalHand())){
-            this.setFinalHand(findTwoPair());
+            this.setFinalHand(findBoat());
         }
         return super.getFinalHand();
     }
@@ -54,29 +54,25 @@ public class TwoPair extends AbstractHand {
             cards.put(card.getRank(), ranked);
         }
         insert(ranked, card);
-        Arrays.sort(ranked, cardComparator());
         insertSize++;
     }
 
-    private Card[] findTwoPair() {
-        Card[] highPair = null;
-        Card[] lowPair = null;
-        Card highSingle = null;
-        for (Map.Entry<Rank, Card[]> entry : cards.entrySet()) {            
-//            System.out.println(Arrays.toString(entry.getValue()));            
-            if (hasTwo(entry.getValue()) && Objects.isNull(highPair)) {
-                highPair = ArrayUtils.subarray(entry.getValue(), 0, 2);
-            } else if (hasTwo(entry.getValue()) && Objects.isNull(lowPair)) {
-                lowPair = ArrayUtils.subarray(entry.getValue(), 0, 2);
-            } else if (Objects.isNull(highSingle)) {
-                highSingle = getSingleCard(entry.getValue());
+    private Card[] findBoat() {
+        Card[] trips = null;
+        Card[] pair = null;
+        for (Map.Entry<Rank, Card[]> entry : cards.entrySet()) {
+            if (hasThree(entry.getValue())) {
+                if (Objects.isNull(trips)) {
+                    trips = ArrayUtils.subarray(entry.getValue(), 0, 3);
+                }
+            } else if (hasTwo(entry.getValue())) {
+                if (Objects.isNull(pair)) {
+                    pair = ArrayUtils.subarray(entry.getValue(), 0, 2);
+                }
             }
         }
-//        System.out.println("high: " + Arrays.toString(highPair) + "\tlow: " + Arrays.toString(lowPair) + "\tsingle: " + highSingle);
-        if (Objects.nonNull(highPair) && Objects.nonNull(lowPair)
-                && Objects.nonNull(highSingle)) {
-            Card[] cs = ArrayUtils.addAll(lowPair, highPair);
-            return ArrayUtils.add(cs, highSingle);
+        if (Objects.nonNull(trips) && Objects.nonNull(pair)) {
+            return ArrayUtils.addAll(trips, pair);
         } else {
             return null;
         }
@@ -86,9 +82,23 @@ public class TwoPair extends AbstractHand {
         for (int i = 1; i < ranked.length; i++) {
             if (Objects.isNull(ranked[i])) {
                 ranked[i] = insert;
+                Arrays.sort(ranked, cardComparator());
                 break;
             }
         }
+    }
+
+    private boolean hasThree(Card[] all) {
+        int index = 0;
+        for (Card c : all) {
+            if (Objects.nonNull(c)) {
+                index++;
+                if (index == 3) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean hasTwo(Card[] all) {
@@ -102,14 +112,5 @@ public class TwoPair extends AbstractHand {
             }
         }
         return false;
-    }
-
-    private Card getSingleCard(Card[] all) {
-        for(Card c : all){
-            if(Objects.nonNull(c)){
-                return c;
-            }
-        }
-        return null;
     }
 }

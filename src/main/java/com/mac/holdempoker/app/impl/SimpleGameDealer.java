@@ -15,16 +15,20 @@ import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.Pot;
 import com.mac.holdempoker.app.enums.Deal;
 import com.mac.holdempoker.app.exceptions.InvalidBoardException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author MacDerson
  */
+@Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SimpleGameDealer implements GameDealer {
 
     private static final int DEAL_ROUNDS = 2;

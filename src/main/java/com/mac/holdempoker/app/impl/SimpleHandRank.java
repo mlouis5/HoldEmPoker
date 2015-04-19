@@ -9,11 +9,16 @@ import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.HandRank;
 import com.mac.holdempoker.app.enums.HandType;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author MacDerson
  */
+@Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SimpleHandRank implements HandRank{
     
     private final HandType type;

@@ -6,7 +6,7 @@
 package com.mac.holdempoker.app;
 
 import com.mac.holdempoker.app.enums.HandType;
-import com.mac.holdempoker.app.util.BoardObserver;
+import com.mac.holdempoker.app.hands.AbstractHand;
 
 /**
  *
@@ -14,15 +14,15 @@ import com.mac.holdempoker.app.util.BoardObserver;
  */
 public interface Hand {
     
-    Card[] getHand() throws Exception;
+    AbstractHand getHand() throws Exception;
     
-    HandType getHandType() throws Exception;
+//    HandType getHandType() throws Exception;
     
-    void addToHand(Card card);
+//    void addToHand(Card card);
     
-    void clearHand();
+//    void clearHand();
     
-    HandRank getHandRank() throws Exception;
+//    HandRank getHandRank() throws Exception;
     
-    void haveSharedCards(Card... cards);
+//    void haveSharedCards(Card... cards);
 }

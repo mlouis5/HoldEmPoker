@@ -11,11 +11,13 @@ import com.mac.holdempoker.app.util.BoardObserver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Mac
  */
+@Component
 public class SimpleBoard implements Board {
 
     private final List<Card> board;

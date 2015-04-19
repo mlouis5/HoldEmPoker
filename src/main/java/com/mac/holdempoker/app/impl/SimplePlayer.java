@@ -7,24 +7,27 @@ package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Action;
 import com.mac.holdempoker.app.Card;
-import com.mac.holdempoker.app.Hand;
 import com.mac.holdempoker.app.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author MacDerson
  */
+@Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SimplePlayer implements Player {
 
     private String playerFirstName;
     private String playerLastName;
     private String playerEmail;
     private String playerId;
-    private List<Card> holeCards;
-    private final Hand hand;
+    private final List<Card> holeCards;
     private int pNumber;
     private int chipStack;
     private boolean isDealer;
@@ -36,7 +39,6 @@ public class SimplePlayer implements Player {
     private Action[] availableActions;
 
     public SimplePlayer() {
-        this.hand = new SimpleHand();
         this.isAllIn = false;
         this.isDealer = false;
         this.isBigBlind = false;
@@ -61,11 +63,6 @@ public class SimplePlayer implements Player {
     }
 
     @Override
-    public void resetHand() {
-        hand.clearHand();
-    }
-
-    @Override
     public void decreaseStack(int amount) {
         if (chipStack - amount < 0) {
             chipStack = 0;
@@ -80,16 +77,10 @@ public class SimplePlayer implements Player {
     }
 
     @Override
-    public void haveSharedCards(Card... cards) {
-        for (Card card : cards) {
-            hand.addToHand(card);
-        }
-    }
-
-    @Override
     public void haveHoleCard(Card card) {
-        holeCards.add(card);
-        hand.addToHand(card);
+        if(holeCards.size() < 2){
+            holeCards.add(card);
+        }
     }
 
     @Override
@@ -247,6 +238,11 @@ public class SimplePlayer implements Player {
     @Override
     public Card[] getHoleCards() {
         return holeCards.toArray(new Card[2]);
+    }
+
+    @Override
+    public void clearHand() {
+        this.holeCards.clear();
     }
 
 }

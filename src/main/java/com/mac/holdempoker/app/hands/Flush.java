@@ -3,37 +3,36 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.app.impl.util;
+package com.mac.holdempoker.app.hands;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.enums.HandType;
-import com.mac.holdempoker.app.enums.Rank;
 import com.mac.holdempoker.app.enums.Suit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 
 /**
  *
  * @author Mac
  */
-public class StraightFlush extends AbstractHand {
+public class Flush extends AbstractHand {
 
     Map<Suit, Card[]> cards;
     private int insertSize;
-    private final Straight straight;
 
-    public StraightFlush() {
-        super(HandType.STRAIGHT_FLUSH);
+    public Flush() {
+        super(HandType.FLUSH);
         cards = new HashMap();
-        straight = new Straight();
+        insertSize = 0;
     }
 
     @Override
     public Card[] getHand() {
         if(Objects.isNull(super.getFinalHand())){
-            this.setFinalHand(findStraightFlush());
+            this.setFinalHand(findFlush());
         }
         return super.getFinalHand();
     }
@@ -41,9 +40,8 @@ public class StraightFlush extends AbstractHand {
     @Override
     public void clear() {
         super.clearFinalHand();
-        cards = new HashMap();
+        cards.clear();
         insertSize = 0;
-        straight.clear();
     }
 
     @Override
@@ -53,23 +51,18 @@ public class StraightFlush extends AbstractHand {
         }
         Card[] suited = cards.get(card.getSuit());
         if (Objects.isNull(suited)) {
-            suited = new Card[14];
+            suited = new Card[13];
             cards.put(card.getSuit(), suited);
         }
-        suited[card.getRank().value() - 1] = card;
-//        System.out.println(Arrays.toString(suited));
-        if (card.getRank() == Rank.ACE) {
-            suited[0] = card;
-        }
+        suited[card.getRank().value() - 2] = card;
+        Arrays.sort(suited, cardComparator());
         insertSize++;
     }
 
-    private Card[] findStraightFlush() {
-        for (Map.Entry<Suit, Card[]> suited : cards.entrySet()) {
+    private Card[] findFlush() {
+        for (Entry<Suit, Card[]> suited : cards.entrySet()) {
             if (hasFive(suited.getValue())) {
-//                System.out.println(Arrays.toString(suited.getValue()));
-                straight.haveCard(suited.getValue());
-                return straight.getHand();
+                return getFlush(suited.getValue());
             }
         }
         return null;
@@ -83,5 +76,20 @@ public class StraightFlush extends AbstractHand {
             }
         }
         return count >= 5;
+    }
+
+    private Card[] getFlush(Card[] suited) {
+        Card[] all = new Card[5];
+        int index = 4;
+        for (int i = suited.length - 1; i >= 0; i--) {
+            Card c = suited[i];
+            if (Objects.nonNull(c)) {
+                all[index--] = c;
+                if (index == -1) {
+                    break;
+                }
+            }
+        }
+        return all;
     }
 }

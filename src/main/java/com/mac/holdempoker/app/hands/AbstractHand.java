@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.app.impl.util;
+package com.mac.holdempoker.app.hands;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.enums.HandType;
@@ -57,7 +57,7 @@ public abstract class AbstractHand implements Comparator<Rank> {
 
     public abstract void haveCard(Card card);
 
-    public void haveCard(Card... cards) {
+    public void haveCards(Card... cards) {
         for (Card card : cards) {
             haveCard(card);
         }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.app.impl.util;
+package com.mac.holdempoker.app.hands;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.enums.HandType;
@@ -46,7 +46,7 @@ public class RoyalFlush extends AbstractHand {
     }
 
     @Override
-    public void haveCard(Card... cards) {
-        straightFlush.haveCard(cards);
+    public void haveCards(Card... cards) {
+        straightFlush.haveCards(cards);
     }
 }

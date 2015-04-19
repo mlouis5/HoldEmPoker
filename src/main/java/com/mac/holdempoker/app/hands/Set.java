@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.app.impl.util;
+package com.mac.holdempoker.app.hands;
 
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.enums.HandType;
@@ -20,20 +20,20 @@ import org.apache.commons.collections.CollectionUtils;
  *
  * @author Mac
  */
-public class Pair extends AbstractHand {
+public class Set extends AbstractHand {
 
     Map<Rank, List<Card>> cards;
     private int insertSize;
 
-    public Pair() {
-        super(HandType.PAIR);
+    public Set() {
+        super(HandType.THREE_OF_A_KIND);
         cards = new TreeMap(this);
     }
 
     @Override
     public Card[] getHand() {
         if(Objects.isNull(super.getFinalHand())){
-            this.setFinalHand(findPair());
+            this.setFinalHand(findSet());
         }
         return super.getFinalHand();
     }
@@ -60,18 +60,18 @@ public class Pair extends AbstractHand {
         insertSize++;
     }
 
-    private Card[] findPair() {
-        List<Card> pair = new ArrayList();
+    private Card[] findSet() {
+        List<Card> trips = new ArrayList();
         List<Card> singles = new ArrayList();
         for (Map.Entry<Rank, List<Card>> entry : cards.entrySet()) {
-            if (entry.getValue().size() == 2 && pair.isEmpty()) {
-                pair = entry.getValue();
-            } else if (entry.getValue().size() == 1 && singles.size() < 3) {
+            if (entry.getValue().size() == 3 && trips.size() == 0) {
+                trips = entry.getValue();
+            } else if (entry.getValue().size() == 1 && singles.size() < 2) {
                 singles.add(entry.getValue().get(0));
             }
         }
-        if (pair.size() == 2 && singles.size() == 3) {
-            return (Card[]) CollectionUtils.union(pair, singles).toArray(new Card[5]);
+        if (trips.size() == 3 && singles.size() == 2) {
+            return (Card[]) CollectionUtils.union(trips, singles).toArray(new Card[5]);
         } else {
             return null;
         }

@@ -8,25 +8,29 @@ package com.mac.holdempoker.app.impl;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Hand;
 import com.mac.holdempoker.app.HandAggregator;
-import com.mac.holdempoker.app.HandEvaluator;
-import com.mac.holdempoker.app.HandRank;
 import com.mac.holdempoker.app.enums.HandType;
+import com.mac.holdempoker.app.hands.AbstractHand;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Mac
  */
+@Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SimpleHandAggregator implements HandAggregator, Comparator<Card> {
 
     @Override
     public long scoreHand(Hand hand) throws Exception {
         if (Objects.nonNull(hand)) {
-            HandRank hr = hand.getHandRank();
-            HandType ht = hr.getHandType();
-            Card[] cards = hr.getHand();
+            AbstractHand ah = hand.getHand();
+            HandType ht = ah.getHandType();
+            Card[] cards = ah.getHand();
             Arrays.sort(cards, this);
             switch (ht) {
                 case ROYAL_FLUSH: {
@@ -103,7 +107,7 @@ public class SimpleHandAggregator implements HandAggregator, Comparator<Card> {
     }
 
     private long scoreTwoPair(Card[] hand) {
-        long val = 0L;
+        long val;
         if (hand[0].getRank().value() == hand[1].getRank().value()
                 && hand[2].getRank().value() == hand[3].getRank().value()) {
             // a a b b x
