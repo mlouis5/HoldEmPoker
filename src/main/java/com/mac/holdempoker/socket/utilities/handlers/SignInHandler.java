@@ -13,16 +13,16 @@ import com.mac.holdempoker.socket.utilities.TypeHandler;
  *
  * @author Mac
  */
-public class SignInHandler implements TypeHandler<SignIn, Contestant>{
+public class SignInHandler {//implements TypeHandler<SignIn, Contestant>{
 
-    @Override
-    public void have(SignIn t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Contestant handle() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    @Override
+//    public void have(SignIn t) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+//
+//    @Override
+//    public Contestant handle() {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
     
 }

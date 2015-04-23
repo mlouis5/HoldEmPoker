@@ -17,11 +17,11 @@ public class TypeHandlerFactory {
     
     public static <T> TypeHandler getHandler(Object o, Class<T> t){
         
-        if(t == SignIn.class){
-            TypeHandler<SignIn, Contestant> signInHandler = new SignInHandler();
-            signInHandler.have((SignIn) t.cast(o));
-            return signInHandler;
-        }
+//        if(t == SignIn.class){
+//            TypeHandler<SignIn, Contestant> signInHandler = new SignInHandler();
+//            signInHandler.have((SignIn) t.cast(o));
+//            return signInHandler;
+//        }
         return null;
     }
 }

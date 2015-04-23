@@ -10,8 +10,6 @@ package com.mac.holdempoker.socket.utilities;
  * @author Mac
  */
 public interface TypeHandler<T, R> {
-    
-    void have(T t);
-    
-    R handle();
+        
+    R handle(T t);
 }

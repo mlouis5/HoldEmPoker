@@ -6,6 +6,7 @@
 package com.mac.holdempoker.socket.utilities;
 
 import java.util.Objects;
+import javax.json.JsonObject;
 
 /**
  *
@@ -14,7 +15,11 @@ import java.util.Objects;
 public class Message {
     
     private String header;
-    private Object payload;
+    private JsonObject payload;
+    
+    public Message(JsonObject json){
+        this.payload = json;
+    }
 
     public String getHeader() {
         return header;
@@ -24,11 +29,11 @@ public class Message {
         this.header = header;
     }
 
-    public Object getPayload() {
+    public JsonObject getPayload() {
         return payload;
     }
 
-    public void setPayload(Object payload) {
+    public void setPayload(JsonObject payload) {
         this.payload = payload;
     }
 
