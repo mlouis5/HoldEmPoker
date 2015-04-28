@@ -7,7 +7,7 @@ package com.mac.holdempoker.game.impl.util;
 
 import com.mac.abstractrepository.db.gamerepo.GameRepo;
 import com.mac.abstractrepository.entities.holdem.GameSetting;
-import com.mac.holdempoker.game.Game;
+import com.mac.holdempoker.app.hands.Game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

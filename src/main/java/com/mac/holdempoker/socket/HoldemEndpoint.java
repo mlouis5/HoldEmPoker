@@ -38,12 +38,12 @@ public class HoldemEndpoint {
         String header = message.getHeader();
         switch (header) {
         case "sing in":
-            try {
-                session.close(new CloseReason(CloseCodes.NORMAL_CLOSURE, "Game ended"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            break;
+//            try {
+//                session.close(new CloseReason(CloseCodes.NORMAL_CLOSURE, "Game ended"));
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//            break;
         }
 //        return message;
         return null;

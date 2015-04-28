@@ -5,6 +5,7 @@
  */
 package com.mac.holdempoker.app.impl;
 
+import com.mac.abstractrepository.entities.holdem.GameSetting;
 import com.mac.holdempoker.app.Action;
 import com.mac.holdempoker.app.Board;
 import com.mac.holdempoker.app.Card;
@@ -38,23 +39,19 @@ public class SimpleGameDealer implements GameDealer {
     private final Deck deck;
     private Deal currentDeal;
     private final Map<Pot, List<Player>> pots;
+    private GameSetting settings;
     
-    public SimpleGameDealer(){
+    public SimpleGameDealer(GameSetting gs){
         this.deck = new SimpleDeck();
         currentDeal = Deal.FLOP;
         pots = new HashMap();
+        this.settings = gs;
     }
 
     @Override
     public void setBoard(Board board) {
         this.board = board;
     }
-
-//    @Override
-//    public void setPlayers(Player... players) {
-//        this.players = Arrays.asList(players);
-//        this.playOrder = new SimplePlayOrder(this.players);
-//    }
 
     @Override
     public void dealAround() {
@@ -104,22 +101,22 @@ public class SimpleGameDealer implements GameDealer {
 
     @Override
     public Board getBoard() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return board;
     }
 
     @Override
     public void setPlayers(List<Player> players) {
         this.players = players;
-        this.playOrder = new SimplePlayOrder(this.players);
+        this.playOrder = new SimplePlayOrder(this.settings.getAnte(), this.players);
     }
 
     @Override
     public List<Player> getPlayers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return players;
     }
 
     @Override
     public PlayOrder getPlayOrder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return playOrder;
     }
 }
