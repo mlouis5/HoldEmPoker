@@ -6,6 +6,7 @@
 package com.mac.holdempoker;
 
 import com.mac.abstractrepository.DataSourceConfiguration;
+import com.mac.holdempoker.socket.HoldemEndpoint;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -20,13 +21,13 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @Configuration
 @Import({ DataSourceConfiguration.class })
-@ComponentScan({ "com.mac.holdempoker.app" })
+@ComponentScan({ "com.mac.holdempoker.app", "com.mac.holdempoker.socket", "com.mac.holdempoker.game" })
 public class Application {
     
     public static void main(String[] args){
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
         
-//        PokerEndPoint server = ctx.getBean(PokerEndPoint.class);
-//        server.start();
+        HoldemEndpoint server = ctx.getBean(HoldemEndpoint.class);
+        server.start();
     }
 }

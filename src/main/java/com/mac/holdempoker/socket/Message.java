@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.socket.utilities;
+package com.mac.holdempoker.socket;
 
 import java.util.Objects;
 import javax.json.JsonObject;
@@ -18,7 +18,8 @@ public class Message {
     private JsonObject payload;
     
     public Message(JsonObject json){
-        this.payload = json;
+        header = json.getString("header");
+        this.payload = json.getJsonObject("payload");
     }
 
     public String getHeader() {

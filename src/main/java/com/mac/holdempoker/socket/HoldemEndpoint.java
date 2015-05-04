@@ -5,52 +5,59 @@
  */
 package com.mac.holdempoker.socket;
 
-import com.mac.holdempoker.socket.utilities.Message;
-import com.mac.holdempoker.socket.utilities.decoders.MessageDecoder;
-import com.mac.holdempoker.socket.utilities.encoders.MessageEncoder;
-import java.io.IOException;
-import javax.websocket.CloseReason;
-import javax.websocket.CloseReason.CloseCodes;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.ServerEndpoint;
+import java.net.InetSocketAddress;
+import java.util.logging.Level;
+import javax.websocket.DecodeException;
+import org.java_websocket.WebSocket;
+import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.server.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Mac
  */
-@ServerEndpoint(value = "/holdem", encoders = {MessageEncoder.class}, decoders = {MessageDecoder.class})
-public class HoldemEndpoint {
+@Component
+public class HoldemEndpoint extends WebSocketServer {
+
+    private static final int PORT = 9595;    
+    private final Logger logger;
     
-    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
- 
-    @OnOpen
-    public void onOpen(Session session) {
-        logger.info("Connected ... " + session.getId());
+    private @Autowired MessageDecoder decoder;
+    private @Autowired MessageEncoder encoder;
+    
+    public HoldemEndpoint(){
+        super(new InetSocketAddress(PORT));
+        this.logger = LoggerFactory.getLogger(this.getClass().getName());
     }
- 
-    @OnMessage
-    public String onMessage(Message message, Session session) {
-        String header = message.getHeader();
-        switch (header) {
-        case "sing in":
-//            try {
-//                session.close(new CloseReason(CloseCodes.NORMAL_CLOSURE, "Game ended"));
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//            break;
+
+    @Override
+    public void onOpen(WebSocket ws, ClientHandshake ch) {
+        System.out.println(ws);
+    }
+
+    @Override
+    public void onClose(WebSocket ws, int i, String string, boolean bln) {
+        System.out.println(ws);
+    }
+
+    @Override
+    public void onMessage(WebSocket ws, String string) {
+        try {
+            Message msg = decoder.decode(string);            
+            System.out.println(msg.getHeader());
+            System.out.println(msg.getPayload());            
+        } catch (DecodeException ex) {
+            java.util.logging.Logger.getLogger(HoldemEndpoint.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        return message;
-        return null;
+    }
+
+    @Override
+    public void onError(WebSocket ws, Exception excptn) {
+        System.out.println(ws);
     }
  
-    @OnClose
-    public void onClose(Session session, CloseReason closeReason) {
-        logger.info(String.format("Session %s closed because of %s", session.getId(), closeReason));
-    }
 }

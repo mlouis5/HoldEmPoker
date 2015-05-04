@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.socket.utilities;
+package com.mac.holdempoker.socket;
 
-import com.mac.holdempoker.socket.pojos.SignIn;
+import com.mac.holdempoker.socket.Message;
 import java.io.IOException;
-import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 /**

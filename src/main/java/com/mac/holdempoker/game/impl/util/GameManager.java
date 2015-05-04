@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameManager {
     
-    @Autowired
+//    @Autowired
     private GameRepo gameRepo;
     
     private List<Game> games;

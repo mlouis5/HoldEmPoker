@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.socket.utilities.decoders;
+package com.mac.holdempoker.socket;
 
-import com.mac.holdempoker.socket.utilities.Message;
+import com.mac.holdempoker.socket.Message;
 import java.io.StringReader;
 import javax.json.Json;
 import javax.json.JsonException;
@@ -13,11 +13,13 @@ import javax.json.JsonObject;
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Mac
  */
+@Component
 public class MessageDecoder implements Decoder.Text<Message>{
 
     /**
@@ -28,7 +30,9 @@ public class MessageDecoder implements Decoder.Text<Message>{
      */
     @Override
     public Message decode(String string) throws DecodeException {
+        System.out.println("Decoding...");
         JsonObject json = Json.createReader(new StringReader(string)).readObject();
+        System.out.println(json);
         return new Message(json);
     }
  

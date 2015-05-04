@@ -13,7 +13,7 @@ import com.mac.holdempoker.app.GameDealer;
 import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.Pot;
 import com.mac.holdempoker.app.hands.Game;
-import com.mac.holdempoker.socket.utilities.JsonConverter;
+import com.mac.holdempoker.socket.JsonConverter;
 import java.io.IOException;
 import java.time.temporal.Temporal;
 import java.util.List;

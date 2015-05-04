@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.socket.pojos;
+package com.mac.holdempoker.socket;
 
 import java.util.Objects;
+import javax.json.JsonObject;
 
 /**
  *
@@ -16,6 +17,15 @@ public class SignIn {
     private String fName;
     private String lName;
     private String gameId;
+    
+    public SignIn(){}
+    
+    public SignIn(JsonObject json){
+        this.email = json.getString("email");
+        this.fName = json.getString("fName");
+        this.lName = json.getString("lName");
+        this.gameId = json.getString("gameId");
+    }
 
     public String getEmail() {
         return email;
@@ -73,7 +83,5 @@ public class SignIn {
             return false;
         }
         return true;
-    }
-    
-    
+    }   
 }

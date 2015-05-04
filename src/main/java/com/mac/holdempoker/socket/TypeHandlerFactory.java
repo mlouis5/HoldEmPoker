@@ -3,11 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.socket.utilities;
-
-import com.mac.abstractrepository.entities.holdem.Contestant;
-import com.mac.holdempoker.socket.pojos.SignIn;
-import com.mac.holdempoker.socket.utilities.handlers.SignInHandler;
+package com.mac.holdempoker.socket;
 
 /**
  *

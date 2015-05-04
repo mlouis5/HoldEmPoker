@@ -3,17 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.holdempoker.socket.utilities.encoders;
+package com.mac.holdempoker.socket;
 
-import com.mac.holdempoker.socket.utilities.Message;
+import com.mac.holdempoker.socket.Message;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Mac
  */
+@Component
 public class MessageEncoder implements Encoder.Text<Message>{
 
     @Override
