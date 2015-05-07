@@ -43,7 +43,7 @@ public class WinnerContainer implements Comparator<Integer>, Iterable<List<Playe
     }
     
     /**
-     * Orders from Greates to lowest score
+     * Orders from Greatest to lowest score
      * @param o1
      * @param o2
      * @return 

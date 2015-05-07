@@ -10,5 +10,5 @@ package com.mac.holdempoker.app.enums;
  * @author Mac
  */
 public enum RoundType {
-    PRE_FLOP, POST_FLOP, POST_TURN, POST_RIVER;
+    PRE_FLOP, PRE_TURN, PRE_RIVER, POST_RIVER;
 }
