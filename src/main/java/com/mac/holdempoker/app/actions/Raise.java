@@ -5,7 +5,7 @@
  */
 package com.mac.holdempoker.app.actions;
 
-import com.mac.holdempoker.app.MonetaryAction;
+import com.mac.holdempoker.app.MoneyAction;
 import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.enums.ActionName;
 
@@ -13,7 +13,7 @@ import com.mac.holdempoker.app.enums.ActionName;
  *
  * @author MacDerson
  */
-public class Raise implements MonetaryAction{
+public class Raise implements MoneyAction{
 
     @Override
     public int getAmount() {

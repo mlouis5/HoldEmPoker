@@ -9,7 +9,7 @@ package com.mac.holdempoker.app;
  *
  * @author MacDerson
  */
-public interface MonetaryAction extends Action{
+public interface MoneyAction extends Action{
     
     int getAmount();
     

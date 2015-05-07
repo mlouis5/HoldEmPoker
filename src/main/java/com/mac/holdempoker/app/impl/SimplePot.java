@@ -5,7 +5,7 @@
  */
 package com.mac.holdempoker.app.impl;
 
-import com.mac.holdempoker.app.MonetaryAction;
+import com.mac.holdempoker.app.MoneyAction;
 import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.Pot;
 import com.mac.holdempoker.app.actions.Bet;
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
 public class SimplePot implements Pot {
 
     private PotName potName;
-    private Map<Player, List<MonetaryAction>> actions;
+    private Map<Player, List<MoneyAction>> actions;
     private int ante;
 
     public SimplePot(int ante) {
@@ -37,8 +37,8 @@ public class SimplePot implements Pot {
     }
 
     @Override
-    public void increasePot(MonetaryAction action) {
-        List<MonetaryAction> actionList = actions.get(action.getActingPlayer());
+    public void increasePot(MoneyAction action) {
+        List<MoneyAction> actionList = actions.get(action.getActingPlayer());
         if (Objects.isNull(actionList)) {
             actionList = new ArrayList(1);
             actionList.add(action);
@@ -50,9 +50,9 @@ public class SimplePot implements Pot {
     @Override
     public int getPotAmount() {
         int amt = 0;
-        Collection<List<MonetaryAction>> allActs = actions.values();
-        for (Iterator<List<MonetaryAction>> it = allActs.iterator(); it.hasNext();) {
-            List<MonetaryAction> acts = it.next();
+        Collection<List<MoneyAction>> allActs = actions.values();
+        for (Iterator<List<MoneyAction>> it = allActs.iterator(); it.hasNext();) {
+            List<MoneyAction> acts = it.next();
             amt = acts.stream().map((ma) -> ma.getAmount()).reduce(amt, Integer::sum);
         }
         return amt;
@@ -76,9 +76,9 @@ public class SimplePot implements Pot {
     @Override
     public int getMinBetAmount() {
         int min = ante * 2;
-        Collection<List<MonetaryAction>> allActs = actions.values();
-        for (List<MonetaryAction> acts : allActs) {
-            for (MonetaryAction act : acts) {
+        Collection<List<MoneyAction>> allActs = actions.values();
+        for (List<MoneyAction> acts : allActs) {
+            for (MoneyAction act : acts) {
                 if (act.getClass() == Bet.class) {
                     if (act.getAmount() > min) {
                         min = act.getAmount();
@@ -92,9 +92,9 @@ public class SimplePot implements Pot {
     @Override
     public int getMinRaiseAmount() {
         int min = ante * 2;
-        Collection<List<MonetaryAction>> allActs = actions.values();
-        for (List<MonetaryAction> acts : allActs) {
-            for (MonetaryAction act : acts) {
+        Collection<List<MoneyAction>> allActs = actions.values();
+        for (List<MoneyAction> acts : allActs) {
+            for (MoneyAction act : acts) {
                 if (act.getAmount() > min) {
                     min = act.getAmount();
                 }
@@ -105,7 +105,7 @@ public class SimplePot implements Pot {
 
     @Override
     public int getPlayerPotCommitment(Player p) {
-        List<MonetaryAction> mActs = actions.get(p);
+        List<MoneyAction> mActs = actions.get(p);
         int amt = 0;
         if (Objects.nonNull(mActs)) {
             amt = mActs.stream().map((ma) -> ma.getAmount()).reduce(amt, Integer::sum);

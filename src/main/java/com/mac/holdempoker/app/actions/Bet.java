@@ -5,7 +5,7 @@
  */
 package com.mac.holdempoker.app.actions;
 
-import com.mac.holdempoker.app.MonetaryAction;
+import com.mac.holdempoker.app.MoneyAction;
 import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.enums.ActionName;
 
@@ -13,7 +13,7 @@ import com.mac.holdempoker.app.enums.ActionName;
  *
  * @author MacDerson
  */
-public class Bet implements MonetaryAction {
+public class Bet implements MoneyAction {
 
     private Player actingPlayer;
     private int amount;
