@@ -82,11 +82,11 @@ public class SimplePotTest {
     public void testSinglePlayerWon() {
         System.out.println("singlePlayerWon");
         Player p = new SimplePlayer();
-        
+        p.setPlayerId("test");
         SimplePot instance = new SimplePot();
         
         MoneyAction action = new Bet();
-        action.setAmount(30);
+        action.setAmount(20);
         action.setActingPlayer(p);
         
         instance.increasePot(action);
@@ -100,7 +100,7 @@ public class SimplePotTest {
         instance.singlePlayerWon(p);
 //        System.out.println(instance.getPurse());
         int result = instance.getPurse();
-        assertEquals(60, p.getStack());
+        assertEquals(40, p.getStack());
     }
 
     /**

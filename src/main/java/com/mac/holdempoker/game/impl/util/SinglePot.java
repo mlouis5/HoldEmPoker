@@ -112,10 +112,11 @@ public class SinglePot {
                 continue;
             }
             int pAmt = ma.getAmount();
-            
+            System.out.println("pAmt: " + pAmt);
             for(Entry<Player, MoneyAction> entry : pActs.entrySet()){
                 int amt = entry.getValue().getAmount();
-                if(amt < pAmt){
+                System.out.println("amt: " + amt);
+                if(amt <= pAmt){
                     pMax += amt;
                 }else{
                     pMax += pAmt;
