@@ -73,9 +73,8 @@ public class SinglePot {
         bets.clear();
     }
     
-    public void payPlayerWholePot(Player p){
-        p.increaseStack(purse);
-        purse = 0;
+    public void paySinglePlayer(Player p){
+        this.payPlayer(p, 1);
         bets.clear();
     }
     
@@ -115,9 +114,6 @@ public class SinglePot {
             int pAmt = ma.getAmount();
             
             for(Entry<Player, MoneyAction> entry : pActs.entrySet()){
-                if(entry.getKey() == p){
-                    continue;
-                }
                 int amt = entry.getValue().getAmount();
                 if(amt < pAmt){
                     pMax += amt;

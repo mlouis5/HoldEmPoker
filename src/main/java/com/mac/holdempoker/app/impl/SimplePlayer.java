@@ -43,7 +43,7 @@ public class SimplePlayer implements Player {
         this.isDealer = false;
         this.isBigBlind = false;
         this.isSmallBlind = false;
-        this.chipStack = -1;
+        this.chipStack = 0;
         this.holeCards = new ArrayList();
     }
 

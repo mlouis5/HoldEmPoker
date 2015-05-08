@@ -15,29 +15,32 @@ import com.mac.holdempoker.app.enums.ActionName;
  */
 public class Call implements MoneyAction{
 
+    private Player actingPlayer;
+    private int amt;
+    
     @Override
     public int getAmount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.amt;
     }
 
     @Override
     public void setAmount(int amt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.amt = amt;
     }
 
     @Override
     public void setActingPlayer(Player p) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.actingPlayer = p;
     }
 
     @Override
     public ActionName getActionName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ActionName.CALL;
     }
 
     @Override
     public Player getActingPlayer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.actingPlayer;
     }
     
 }

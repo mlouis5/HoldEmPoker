@@ -55,7 +55,7 @@ public class SimplePot {//implements Pot {
     
     public void singlePlayerWon(Player p){
         pot.values().stream().forEach((singlePot) -> {
-            singlePot.payPlayerWholePot(p);
+            singlePot.paySinglePlayer(p);
         });
         set();
     }
