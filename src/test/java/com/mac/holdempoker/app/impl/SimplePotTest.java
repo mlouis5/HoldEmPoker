@@ -47,7 +47,7 @@ public class SimplePotTest {
     }
 
     /**
-     * Test of actionPerformed method, of class SimplePot.
+     * Test of increasePot method, of class SimplePot.
      */
     @Test
     public void testActionPerformed() {
@@ -56,7 +56,7 @@ public class SimplePotTest {
         action.setAmount(30);
         action.setActingPlayer(new SimplePlayer());
         SimplePot instance = new SimplePot();
-        instance.actionPerformed(action);
+        instance.increasePot(action);
         System.out.println(instance.getPurse());
         // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
@@ -89,13 +89,13 @@ public class SimplePotTest {
         action.setAmount(30);
         action.setActingPlayer(p);
         
-        instance.actionPerformed(action);
+        instance.increasePot(action);
         
         action = new Call();
         action.setAmount(30);
         action.setActingPlayer(new SimplePlayer());
         
-        instance.actionPerformed(action);
+        instance.increasePot(action);
         
         instance.singlePlayerWon(p);
 //        System.out.println(instance.getPurse());
@@ -115,13 +115,13 @@ public class SimplePotTest {
         action.setAmount(30);
         action.setActingPlayer(new SimplePlayer());
         
-        instance.actionPerformed(action);
+        instance.increasePot(action);
         
         action = new Call();
         action.setAmount(30);
         action.setActingPlayer(new SimplePlayer());
         
-        instance.actionPerformed(action);
+        instance.increasePot(action);
         
         System.out.println(instance.getPurse());
         int result = instance.getPurse();

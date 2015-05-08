@@ -5,7 +5,8 @@
  */
 package com.mac.holdempoker.app;
 
-import com.mac.holdempoker.app.enums.PotName;
+import com.mac.holdempoker.app.enums.RoundType;
+import com.mac.holdempoker.game.impl.util.WinnerContainer;
 
 /**
  *
@@ -13,19 +14,13 @@ import com.mac.holdempoker.app.enums.PotName;
  */
 public interface Pot{
     
-    void setPotName(PotName potName);
-    
-    PotName getPotName();
-
     void increasePot(MoneyAction action);
     
-    int getMinBetAmount();
+    void multiplePlayersWon(WinnerContainer wc);
     
-    int getMinRaiseAmount();
+    void newRound(RoundType roundType);
     
-    int getPotAmount();
+    void singlePlayerWon(Player p);
     
-    void clearPot();
-    
-    public int getPlayerPotCommitment(Player p);
+    int getPurse();
 }
