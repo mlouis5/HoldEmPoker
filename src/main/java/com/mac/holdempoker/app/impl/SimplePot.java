@@ -12,8 +12,12 @@ import com.mac.holdempoker.app.enums.RoundType;
 import com.mac.holdempoker.game.impl.util.SinglePot;
 import com.mac.holdempoker.game.impl.util.WinnerContainer;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -63,6 +67,15 @@ public class SimplePot implements Pot {
             singlePot.paySinglePlayer(p);
         });
         set();
+    }
+    
+    public Set<Player> getPlayersToBePaid(WinnerContainer wc){
+        Iterator<List<Player>> iter = wc.iterator();
+        Set<Player> toBePaid = new HashSet();
+        pot.values().stream().forEach((singlePot) -> {
+            toBePaid.addAll(singlePot.getPlayersToBePaid(iter));
+        });
+        return toBePaid;
     }
     
     @Override

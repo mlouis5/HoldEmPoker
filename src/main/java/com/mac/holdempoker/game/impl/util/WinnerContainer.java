@@ -18,16 +18,16 @@ import java.util.TreeMap;
  *
  * @author MacDerson
  */
-public class WinnerContainer implements Comparator<Integer>, Iterable<List<Player>> {
+public class WinnerContainer implements Comparator<Long>, Iterable<List<Player>> {
 
-    private final Map<Integer, List<Player>> pScores;
+    private final Map<Long, List<Player>> pScores;
     
     public WinnerContainer(){
         pScores = new TreeMap(this);
     }
     
-    public void addPlayerScore(Player p, int score){
-        if(Objects.isNull(p) || score < 1){
+    public void addPlayerScore(Player p, long score){
+        if(Objects.isNull(p) || score < 1L){
             return;
         }
         List<Player> players = pScores.get(score);
@@ -49,8 +49,14 @@ public class WinnerContainer implements Comparator<Integer>, Iterable<List<Playe
      * @return 
      */
     @Override
-    public int compare(Integer o1, Integer o2) {
-        return (o1 - 02) * -1;
+    public int compare(Long o1, Long o2) {
+        if(o1 == o2){
+            return 0;
+        }else if(o1 < o2){
+            return 1;
+        }else{
+            return -1;
+        }
     }
 
     @Override

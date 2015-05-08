@@ -164,4 +164,9 @@ public class SimplePlayOrder implements PlayOrder, Comparator<Card> {
     public void increaseAnte() {
         this.ante++;
     }
+
+    @Override
+    public boolean canPlayerAct(Player p) {
+        return orderedPlayers.indexOf(p) == playOrder;
+    }
 }

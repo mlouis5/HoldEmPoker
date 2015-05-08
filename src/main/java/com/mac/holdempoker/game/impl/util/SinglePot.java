@@ -48,6 +48,7 @@ public class SinglePot {
             if(Objects.isNull(ma)){
                 actions.put(p, action);
                 inserted = true;
+                break;
             }
         }
         if(!inserted){
@@ -126,7 +127,7 @@ public class SinglePot {
         return pMax;
     }
     
-    private Set<Player> getPlayersToBePaid(Iterator<List<Player>> iter){
+    public Set<Player> getPlayersToBePaid(Iterator<List<Player>> iter){
         Set<Player> toBePaid = new TreeSet(new PayOrderComparator());
         
         whileLoop: while(iter.hasNext()){

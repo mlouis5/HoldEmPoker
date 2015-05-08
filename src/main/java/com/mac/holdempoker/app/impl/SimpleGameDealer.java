@@ -11,14 +11,15 @@ import com.mac.holdempoker.app.Board;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Deck;
 import com.mac.holdempoker.app.GameDealer;
+import com.mac.holdempoker.app.MoneyAction;
 import com.mac.holdempoker.app.PlayOrder;
 import com.mac.holdempoker.app.Player;
-import com.mac.holdempoker.app.Pot;
+import com.mac.holdempoker.app.enums.ActionName;
 import com.mac.holdempoker.app.enums.Deal;
+import com.mac.holdempoker.app.enums.RoundType;
 import com.mac.holdempoker.app.exceptions.InvalidBoardException;
-import java.util.HashMap;
+import com.mac.holdempoker.game.impl.GameState;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -38,13 +39,12 @@ public class SimpleGameDealer implements GameDealer {
     private PlayOrder playOrder;
     private final Deck deck;
     private Deal currentDeal;
-    private final Map<Pot, List<Player>> pots;
     private GameSetting settings;
+    private SimplePot pot;
     
     public SimpleGameDealer(GameSetting gs){
         this.deck = new SimpleDeck();
         currentDeal = Deal.FLOP;
-        pots = new HashMap();
         this.settings = gs;
     }
 
@@ -55,6 +55,7 @@ public class SimpleGameDealer implements GameDealer {
 
     @Override
     public void dealAround() {
+        pot = new SimplePot();
         deck.buildDeck();
         deck.shuffleDeck();
         
@@ -73,16 +74,19 @@ public class SimpleGameDealer implements GameDealer {
             case FLOP:{
                 card = deck.drawNumCards(3);
                 currentDeal = Deal.TURN;
+                pot.newRound(RoundType.PRE_TURN);
                 break;
             }
             case TURN:{
                  card = deck.drawNumCards(1);
                  currentDeal = Deal.RIVER;
+                 pot.newRound(RoundType.PRE_RIVER);
                  break;
             }
             case RIVER:{
                 card = deck.drawNumCards(1);
                 currentDeal = Deal.FLOP;
+                pot.newRound(RoundType.POST_RIVER);
             }
         }
         board.dealToBoard(card); 
@@ -96,7 +100,19 @@ public class SimpleGameDealer implements GameDealer {
 
     @Override
     public void actionPerformed(Action action) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(Objects.isNull(action)){
+            return;
+        }
+        if(action instanceof MoneyAction){
+            pot.increasePot((MoneyAction) action);
+            System.out.println("ADD IMPLEMENTATION FOR BETTING/RAISING");
+        }else{
+            if(action.getActionName() == ActionName.FOLD){
+                System.out.println("ADD IMPLEMENTATION FOR FOLDING");
+            }else if(action.getActionName() == ActionName.CHECK){
+                System.out.println("ADD IMPLEMENTATION FOR CHECKING");
+            }
+        }
     }
 
     @Override
@@ -118,5 +134,14 @@ public class SimpleGameDealer implements GameDealer {
     @Override
     public PlayOrder getPlayOrder() {
         return playOrder;
+    }
+
+    @Override
+    public GameState getGameState() {
+        GameState gs = new GameState();
+        gs.setBoard(board);
+        gs.setPlayers(players);
+        gs.setPot(pot);
+        return gs;
     }
 }

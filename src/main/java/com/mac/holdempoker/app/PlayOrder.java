@@ -34,4 +34,6 @@ public interface PlayOrder {
     public void clear();
     
     public void increaseAnte();
+    
+    public boolean canPlayerAct(Player p);
 }
