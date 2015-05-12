@@ -27,13 +27,13 @@ public interface PlayOrder {
     
     public List<Player> getPlayers();
     
-    public int getBigAmt();
-    
-    public int getSmallAmt();
+//    public int getBigAmt();
+//    
+//    public int getSmallAmt();
     
     public void clear();
     
-    public void increaseAnte();
+//    public void increaseAnte();
     
     public boolean canPlayerAct(Player p);
 }

@@ -31,23 +31,15 @@ public class SimplePlayOrder implements PlayOrder, Comparator<Card> {
     private Player smallBlind;
     private Player bigBlind;
     private Player button;
-
-    private int ante;
-
+    
     private List<Player> orderedPlayers;
     private int playOrder;
     private int dealOrder;
 
-    public SimplePlayOrder(int ante, List<Player> players) {
-        orderPlayers(players);
-        this.ante = ante;
-    }
-    
     public SimplePlayOrder(List<Player> players) {
         orderPlayers(players);
-        this.ante = 0;
     }
-
+    
     @Override
     public Player getButton() {
         return this.button;
@@ -61,16 +53,6 @@ public class SimplePlayOrder implements PlayOrder, Comparator<Card> {
     @Override
     public Player getSmallBlind() {
         return this.smallBlind;
-    }
-
-    @Override
-    public int getBigAmt() {
-        return ante * 2;
-    }
-
-    @Override
-    public int getSmallAmt() {
-        return ante;
     }
 
     @Override
@@ -158,11 +140,6 @@ public class SimplePlayOrder implements PlayOrder, Comparator<Card> {
     private void resetPointers() {
         playOrder = 0;
         dealOrder = 0;
-    }
-
-    @Override
-    public void increaseAnte() {
-        this.ante++;
     }
 
     @Override

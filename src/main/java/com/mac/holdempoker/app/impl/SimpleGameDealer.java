@@ -19,6 +19,8 @@ import com.mac.holdempoker.app.enums.Deal;
 import com.mac.holdempoker.app.enums.RoundType;
 import com.mac.holdempoker.app.exceptions.InvalidBoardException;
 import com.mac.holdempoker.game.impl.GameState;
+import com.mac.holdempoker.game.impl.util.RoundObserver;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -31,21 +33,25 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SimpleGameDealer implements GameDealer {
+public class SimpleGameDealer implements GameDealer, RoundObserver {
 
     private static final int DEAL_ROUNDS = 2;
     private Board board;
     private List<Player> players;
+    private List<Player> eliminated;
     private PlayOrder playOrder;
     private final Deck deck;
     private Deal currentDeal;
     private GameSetting settings;
-    private SimplePot pot;
+//    private SimplePot pot;
+    private SimpleRound simpleRound;
+    
     
     public SimpleGameDealer(GameSetting gs){
         this.deck = new SimpleDeck();
         currentDeal = Deal.FLOP;
         this.settings = gs;
+        eliminated = new ArrayList(1);
     }
 
     @Override
@@ -55,7 +61,7 @@ public class SimpleGameDealer implements GameDealer {
 
     @Override
     public void dealAround() {
-        pot = new SimplePot();
+        simpleRound.reset(removeEliminated());
         deck.buildDeck();
         deck.shuffleDeck();
         
@@ -74,19 +80,19 @@ public class SimpleGameDealer implements GameDealer {
             case FLOP:{
                 card = deck.drawNumCards(3);
                 currentDeal = Deal.TURN;
-                pot.newRound(RoundType.PRE_TURN);
+                simpleRound.setRound(RoundType.PRE_TURN);
                 break;
             }
             case TURN:{
                  card = deck.drawNumCards(1);
                  currentDeal = Deal.RIVER;
-                 pot.newRound(RoundType.PRE_RIVER);
+                 simpleRound.setRound(RoundType.PRE_RIVER);
                  break;
             }
             case RIVER:{
                 card = deck.drawNumCards(1);
                 currentDeal = Deal.FLOP;
-                pot.newRound(RoundType.POST_RIVER);
+                simpleRound.setRound(RoundType.POST_RIVER);
             }
         }
         board.dealToBoard(card); 
@@ -103,16 +109,18 @@ public class SimpleGameDealer implements GameDealer {
         if(Objects.isNull(action)){
             return;
         }
-        if(action instanceof MoneyAction){
-            pot.increasePot((MoneyAction) action);
-            System.out.println("ADD IMPLEMENTATION FOR BETTING/RAISING");
-        }else{
-            if(action.getActionName() == ActionName.FOLD){
-                System.out.println("ADD IMPLEMENTATION FOR FOLDING");
-            }else if(action.getActionName() == ActionName.CHECK){
-                System.out.println("ADD IMPLEMENTATION FOR CHECKING");
-            }
-        }
+        simpleRound.actionPerformed(action);
+        
+//        if(action instanceof MoneyAction){
+//            pot.increasePot((MoneyAction) action);
+//            System.out.println("ADD IMPLEMENTATION FOR BETTING/RAISING");
+//        }else{
+//            if(action.getActionName() == ActionName.FOLD){
+//                System.out.println("ADD IMPLEMENTATION FOR FOLDING");
+//            }else if(action.getActionName() == ActionName.CHECK){
+//                System.out.println("ADD IMPLEMENTATION FOR CHECKING");
+//            }
+//        }
     }
 
     @Override
@@ -123,7 +131,8 @@ public class SimpleGameDealer implements GameDealer {
     @Override
     public void setPlayers(List<Player> players) {
         this.players = players;
-        this.playOrder = new SimplePlayOrder(this.settings.getAnte(), this.players);
+        this.playOrder = new SimplePlayOrder(this.players);
+        this.simpleRound = new SimpleRound(this.players);
     }
 
     @Override
@@ -141,7 +150,24 @@ public class SimpleGameDealer implements GameDealer {
         GameState gs = new GameState();
         gs.setBoard(board);
         gs.setPlayers(players);
-        gs.setPot(pot);
+        gs.setPot(simpleRound.getPot());
         return gs;
+    }
+
+    @Override
+    public void winningPlayers(Player... plyrs) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private List<Player> removeEliminated(){
+        for(Player p : players){
+            if(p.isEliminated()){
+                eliminated.add(p);
+            }
+        }
+        for(Player elim : eliminated){
+            players.remove(elim);
+        }
+        return players;
     }
 }

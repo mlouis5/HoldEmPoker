@@ -14,14 +14,4 @@ import com.mac.holdempoker.app.Player;
 public interface RoundObserver {
         
     void winningPlayers(Player...plyrs);
-    
-    void playerChecked(Player p);
-    
-    void raise(Player p, int amount);
-    
-    void call(Player p, int amount);
-    
-    void fold(Player p);
-    
-    void allIn(Player p);
 }

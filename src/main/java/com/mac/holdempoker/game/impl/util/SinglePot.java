@@ -24,131 +24,131 @@ import java.util.TreeSet;
  * @author MacDerson
  */
 public class SinglePot {
-    
+
     private final List<Map<Player, MoneyAction>> bets;
     private int purse;
     private RoundType rt;
-    
-    public SinglePot(RoundType rt){
+
+    public SinglePot(RoundType rt) {
         this.rt = rt;
         bets = new ArrayList();
         purse = 0;
     }
-    
-    public void addAction(MoneyAction action){
-        if(Objects.isNull(action)){
+
+    public void addAction(MoneyAction action) {
+        if (Objects.isNull(action)) {
             return;
         }
         purse += action.getAmount();
         boolean inserted = false;
-        
+
         Player p = action.getActingPlayer();
-        for(Map<Player, MoneyAction> actions : bets){
+        for (Map<Player, MoneyAction> actions : bets) {
             MoneyAction ma = actions.get(p);
-            if(Objects.isNull(ma)){
+            if (Objects.isNull(ma)) {
                 actions.put(p, action);
                 inserted = true;
                 break;
             }
         }
-        if(!inserted){
+        if (!inserted) {
             Map<Player, MoneyAction> main = new HashMap();
             main.put(p, action);
             bets.add(main);
         }
     }
-    
-    public void payWinners(WinnerContainer wc){
-        if(Objects.isNull(wc) && !isPotSolvent()){
+
+    public void payWinners(WinnerContainer wc) {
+        if (Objects.isNull(wc) && !isPotSolvent()) {
             return;
         }
         Iterator<List<Player>> iter = wc.iterator();
-        Set<Player> toBePaid = getPlayersToBePaid(iter);
-        
-        Iterator<Player> paidPlyrs = toBePaid.iterator();
-        while(paidPlyrs.hasNext()){
-            Player next = paidPlyrs.next();
-            payPlayer(next, toBePaid.size());
-            toBePaid.remove(next);
+
+        while (iter.hasNext() && isPotSolvent()) {
+            List<Player> plyrs = iter.next();
+            plyrs.stream().forEach((p) -> {
+                payPlayer(p, plyrs.size());
+            });
         }
         bets.clear();
     }
-    
-    public void paySinglePlayer(Player p){
+
+    public void paySinglePlayer(Player p) {
         this.payPlayer(p, 1);
         bets.clear();
     }
-    
-    public int getPurse(){
+
+    public int getPurse() {
         return purse;
     }
-    
-    private boolean isPotSolvent(){
+
+    private boolean isPotSolvent() {
         return purse > 0;
     }
-    
-    private void payPlayer(Player p, int numPlyrs){
-        if(!isPotSolvent()){
+
+    private void payPlayer(Player p, int numPlyrs) {
+        if (!isPotSolvent()) {
             return;
         }
-        int pMax = getPlayerMaxWinAmt(p);        
+        int pMax = getPlayerMaxWinAmt(p);
         int payOut = Math.floorDiv(pMax, numPlyrs);
         p.increaseStack(payOut);
         purse -= payOut;
     }
-    
-    private boolean isPlayerCoverPurse(Player p){
+
+    private boolean isPlayerCoverPurse(Player p) {
         return getPlayerMaxWinAmt(p) == purse;
     }
-    
-    private int getPlayerMaxWinAmt(Player p){
-        if(Objects.isNull(p)){
+
+    private int getPlayerMaxWinAmt(Player p) {
+        if (Objects.isNull(p)) {
             return 0;
         }
         int pMax = 0;
-        for(int i = bets.size() - 1; i >= 0; i--){
+        for (int i = bets.size() - 1; i >= 0; i--) {
             Map<Player, MoneyAction> pActs = bets.get(i);
             MoneyAction ma = pActs.get(p);
-            if(Objects.isNull(ma)){
+            if (Objects.isNull(ma)) {
                 continue;
             }
             int pAmt = ma.getAmount();
             System.out.println("pAmt: " + pAmt);
-            for(Entry<Player, MoneyAction> entry : pActs.entrySet()){
+            for (Entry<Player, MoneyAction> entry : pActs.entrySet()) {
                 int amt = entry.getValue().getAmount();
                 System.out.println("amt: " + amt);
-                if(amt <= pAmt){
+                if (amt <= pAmt) {
                     pMax += amt;
-                }else{
+                } else {
                     pMax += pAmt;
                 }
             }
         }
         return pMax;
     }
-    
-    public Set<Player> getPlayersToBePaid(Iterator<List<Player>> iter){
+
+    public Set<Player> getPlayersToBePaid(Iterator<List<Player>> iter) {
         Set<Player> toBePaid = new TreeSet(new PayOrderComparator());
-        
-        whileLoop: while(iter.hasNext()){
+
+        whileLoop:
+        while (iter.hasNext()) {
             List<Player> plyrs = iter.next();
-            for(Player p : plyrs){
-                if(isPlayerCoverPurse(p)){
+            for (Player p : plyrs) {
+                if (isPlayerCoverPurse(p)) {
                     toBePaid.addAll(plyrs);
                     break whileLoop;
-                }else{
+                } else {
                     toBePaid.addAll(plyrs);
                 }
             }
         }
         return toBePaid;
     }
-    
+
     private class PayOrderComparator implements Comparator<Player> {
         @Override
         public int compare(Player o1, Player o2) {
             return getPlayerMaxWinAmt(o1) - getPlayerMaxWinAmt(o2);
-        }        
+        }
     }
 
     @Override
@@ -172,5 +172,5 @@ public class SinglePot {
         }
         return true;
     }
-    
+
 }
