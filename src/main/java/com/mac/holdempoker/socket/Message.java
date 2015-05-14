@@ -15,10 +15,12 @@ import javax.json.JsonObject;
 public class Message {
     
     private String header;
+    private String pid;
     private JsonObject payload;
     
     public Message(JsonObject json){
         header = json.getString("header");
+        pid = json.getString("pid");
         this.payload = json.getJsonObject("payload");
     }
 
@@ -36,6 +38,14 @@ public class Message {
 
     public void setPayload(JsonObject payload) {
         this.payload = payload;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 
     @Override

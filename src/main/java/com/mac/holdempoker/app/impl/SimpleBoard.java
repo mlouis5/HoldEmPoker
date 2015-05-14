@@ -26,29 +26,29 @@ public class SimpleBoard implements Board {
         board = new ArrayList();
     }
     
-    @Override
-    public Card[] getFlop() {
-        if(board.size() < 3){
-            return null;
-        }
-        return board.subList(0, 3).toArray(new Card[3]);
-    }
-
-    @Override
-    public Card getTurn() {
-        if(board.size() < 4){
-            return null;
-        }
-        return board.get(3);
-    }
-
-    @Override
-    public Card getRiver() {
-        if(board.size() < 5){
-            return null;
-        }
-        return board.get(4);
-    }
+//    @Override
+//    public Card[] getFlop() {
+//        if(board.size() < 3){
+//            return null;
+//        }
+//        return board.subList(0, 3).toArray(new Card[3]);
+//    }
+//
+//    @Override
+//    public Card getTurn() {
+//        if(board.size() < 4){
+//            return null;
+//        }
+//        return board.get(3);
+//    }
+//
+//    @Override
+//    public Card getRiver() {
+//        if(board.size() < 5){
+//            return null;
+//        }
+//        return board.get(4);
+//    }
 
     @Override
     public void dealToBoard(Card... cards) {

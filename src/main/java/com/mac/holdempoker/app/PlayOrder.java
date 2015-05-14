@@ -21,19 +21,13 @@ public interface PlayOrder {
     
     public Player getNextToAct();
     
-    public void order();
+    public void order(List<Player> players);
     
     public void dealToNext(Card card);
     
     public List<Player> getPlayers();
     
-//    public int getBigAmt();
-//    
-//    public int getSmallAmt();
-    
     public void clear();
-    
-//    public void increaseAnte();
     
     public boolean canPlayerAct(Player p);
 }

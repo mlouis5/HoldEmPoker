@@ -7,17 +7,13 @@ package com.mac.holdempoker.app.impl;
 
 import com.mac.abstractrepository.entities.holdem.GameSetting;
 import com.mac.holdempoker.app.Action;
-import com.mac.holdempoker.app.PlayOrder;
-import com.mac.holdempoker.app.Board;
 import com.mac.holdempoker.app.GameDealer;
 import com.mac.holdempoker.app.Player;
-import com.mac.holdempoker.app.Pot;
 import com.mac.holdempoker.app.hands.Game;
+import com.mac.holdempoker.game.impl.GameState;
 import com.mac.holdempoker.socket.JsonConverter;
 import java.io.IOException;
 import java.time.temporal.Temporal;
-import java.util.List;
-import java.util.Objects;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -29,34 +25,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SimpleGame implements Game{
-    
-    private List<Pot> pots;
-    
-    private List<Player> players;
-    
+        
     private GameSetting settings;
     
     private final GameDealer dealer;
         
-    public SimpleGame(GameSetting setting) {
-        this.settings = setting;
-        dealer = new SimpleGameDealer(settings);
-    }
-    
-    public PlayOrder getPlayOrder(){
-        return dealer.getPlayOrder();
-    }
-    
-    public void setPots(List<Pot> pots){
-        this.pots = pots;
-    }
-    
-    public List<Pot> getPots(){
-        return pots;
-    }
-    
-    public Board getBoard(){
-        return dealer.getBoard();
+    public SimpleGame() {
+        dealer = new SimpleGameDealer();
     }
     
     public GameSetting getSettings(){
@@ -69,12 +44,14 @@ public class SimpleGame implements Game{
     
     @Override
     public String getGameId() {
-        return this.settings.getGameid();
+//        return this.settings.getGameid();
+        return null;
     }
 
     @Override
     public Temporal getGameStartTime() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
@@ -84,18 +61,16 @@ public class SimpleGame implements Game{
     
     @Override
     public void start() {
-        dealer.setPlayers(players);
-        dealer.setBoard(new SimpleBoard());
-        dealer.dealAround();
+//        if(Objects.nonNull(players))
+//        dealer.setPlayers(players);
+//        dealer.dealAround();
     }
 
     @Override
     public void addPlayer(Player p) {
-        if(Objects.nonNull(settings)){
-            if(players.size() < settings.getMaxPlayer()){
-                players.add(p);
-            }
-        }
+//        if(Objects.nonNull(settings)){
+            dealer.addPlayer(p);
+//        }
     }
     
     @Override
@@ -104,7 +79,7 @@ public class SimpleGame implements Game{
     }
     
     public static void main(String[] args) throws IOException{
-        SimpleGame sg = new SimpleGame(new GameSetting());
+        SimpleGame sg = new SimpleGame();
                         
         sg.addPlayer(new SimplePlayer());
         sg.addPlayer(new SimplePlayer());
@@ -114,6 +89,11 @@ public class SimpleGame implements Game{
         sg.start();
         
         System.out.println(JsonConverter.toJsonString(sg));
+    }
+
+    @Override
+    public GameState getGameState() {
+        return dealer.getGameState();
     }
 
     

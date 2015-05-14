@@ -5,7 +5,6 @@
  */
 package com.mac.holdempoker.socket;
 
-import com.mac.holdempoker.socket.Message;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;

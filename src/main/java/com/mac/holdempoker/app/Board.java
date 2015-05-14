@@ -13,11 +13,11 @@ import com.mac.holdempoker.app.util.Observable;
  */
 public interface Board extends Observable{
 
-    Card[] getFlop();
+//    Card[] getFlop();
 
-    Card getTurn();
-
-    Card getRiver();
+//    Card getTurn();
+//
+//    Card getRiver();
 
     void dealToBoard(Card... cards);
     

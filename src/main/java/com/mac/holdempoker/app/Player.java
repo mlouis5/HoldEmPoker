@@ -5,7 +5,9 @@
  */
 package com.mac.holdempoker.app;
 
+import com.mac.holdempoker.app.enums.Status;
 import com.mac.holdempoker.app.util.BoardObserver;
+import java.util.Set;
 
 /**
  *
@@ -31,9 +33,13 @@ public interface Player extends BoardObserver{
     
     String getPlayerName();
     
-    void setPlayerNumber(int num);
+    void addStatus(Status status);
     
-    int getPlayerNumber();
+    void removeStatus(Status status);
+    
+    Set<Status> getStatus();
+    
+    void clearStatus();
     
     void setStack(int stack);
     
@@ -42,38 +48,12 @@ public interface Player extends BoardObserver{
     void decreaseStack(int amount);
     
     void increaseStack(int amount);
-    
-    boolean isEliminated();
-    
+        
     Card[] getHoleCards();
     
     void clearHand();
     
-    void haveHoleCard(Card card);
-    
-    void setIsDealer(boolean isDealer);
-    
-    void setIsBigBlind(boolean isBigBlind);
-    
-    void setIsSmallBlind(boolean isSmallBlind);
-    
-    boolean getIsBigBlind();
-    
-    boolean getIsSmallBlined();
-    
-    boolean getIsDealer();
-    
-    void setActionOrder(int betOrder);
-    
-    int getActionOrder();
-    
-    void setAction(Action action);
-    
-    Action getAction();
-    
-    boolean getIsAllIn();
-    
-    void setIsAllIn(boolean isAllIn);
+    void haveHoleCard(Card card);;
     
     void setAvailableActions(Action... possibleActions);
     

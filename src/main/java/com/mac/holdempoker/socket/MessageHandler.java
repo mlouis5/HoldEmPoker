@@ -6,8 +6,12 @@
 package com.mac.holdempoker.socket;
 
 import com.mac.holdempoker.app.Action;
-import com.mac.holdempoker.socket.SignIn;
-import com.mac.holdempoker.socket.Message;
+import com.mac.holdempoker.app.Player;
+import com.mac.holdempoker.app.enums.Header;
+import com.mac.holdempoker.app.hands.Game;
+import com.mac.holdempoker.app.impl.SimplePlayer;
+import java.util.Objects;
+import javax.json.JsonObject;
 
 /**
  *
@@ -15,25 +19,45 @@ import com.mac.holdempoker.socket.Message;
  */
 public class MessageHandler {
 
+    private Game game;
+
+    public MessageHandler(Game game){
+        this.game = game;
+    }
+    
+    public void setGame(Game game){
+        this.game = game;
+    }
+
     public void handle(Message msg) {
         String header = msg.getHeader();
-        switch(header){
-            case "sign in":{
-                SignIn signIn = new SignIn(msg.getPayload());
+        Header h = Header.getHeader(header);
+        if (Objects.isNull(h)) {
+            return;
+        }
+        switch (h) {
+            case SIGN_IN: {
+                handleSignIn(msg.getPayload());
             }
         }
     }
-    
-    private void handleSignIn(SignIn signIn){
-        
+
+    private void handleSignIn(JsonObject payload) {
+        try{
+        SignIn signIn = new SignIn(payload);
+        Player p = new SimplePlayer(signIn);
+        game.addPlayer(p);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
-    
-    private void handleAction(Action action){
-        
+
+    private void handleAction(Action action) {
+
     }
-    
-    private void handleSignOut(){
-        
+
+    private void handleSignOut() {
+
     }
-    
+
 }

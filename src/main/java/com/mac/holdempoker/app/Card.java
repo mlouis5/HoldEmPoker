@@ -18,10 +18,6 @@ public interface Card extends Printable, Serializable, Comparable<Card> {
     public Suit getSuit();
 
     public Rank getRank();
-
-    public boolean isIsBurned();
-    
-    public void reset();
     
     public boolean isSameSuit(Card card);
     

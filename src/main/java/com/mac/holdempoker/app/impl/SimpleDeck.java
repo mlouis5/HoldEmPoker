@@ -49,9 +49,6 @@ public class SimpleDeck implements Deck {
         if(deck.isEmpty()){
             return;
         }
-        deck.stream().forEach((card) -> {
-            card.reset();
-        });
         Collections.shuffle(deck);
         shuffle();
     }

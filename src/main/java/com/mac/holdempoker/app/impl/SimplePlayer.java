@@ -5,12 +5,21 @@
  */
 package com.mac.holdempoker.app.impl;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import com.mac.holdempoker.app.Action;
 import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Player;
+import com.mac.holdempoker.app.enums.Status;
+import com.mac.holdempoker.socket.SignIn;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -28,38 +37,29 @@ public class SimplePlayer implements Player {
     private String playerEmail;
     private String playerId;
     private final List<Card> holeCards;
-    private int pNumber;
     private int chipStack;
-    private boolean isDealer;
-    private boolean isBigBlind;
-    private boolean isSmallBlind;
-    private boolean isAllIn;
-    private int actionOrder;
-    private Action action;
+    private final Set<Status> status;
     private Action[] availableActions;
 
     public SimplePlayer() {
-        this.isAllIn = false;
-        this.isDealer = false;
-        this.isBigBlind = false;
-        this.isSmallBlind = false;
         this.chipStack = 0;
         this.holeCards = new ArrayList();
+        status = new HashSet();
+    }
+    
+    public SimplePlayer(SignIn signIn) {
+        this.setPlayerFirstName(signIn.getfName());
+        this.setPlayerLastName(signIn.getlName());
+        this.setPlayerEmail(signIn.getEmail());
+        setPid(signIn.getfName(), signIn.getlName(), signIn.getEmail());
+        this.chipStack = 0;
+        this.holeCards = new ArrayList();
+        status = new HashSet();
     }
 
     @Override
     public String getPlayerName() {
         return playerFirstName + " " + playerLastName;
-    }
-
-    @Override
-    public void setPlayerNumber(int num) {
-        this.pNumber = num;
-    }
-
-    @Override
-    public int getPlayerNumber() {
-        return pNumber;
     }
 
     @Override
@@ -84,56 +84,6 @@ public class SimplePlayer implements Player {
     }
 
     @Override
-    public boolean isEliminated() {
-        return chipStack == 0;
-    }
-
-    @Override
-    public void setIsDealer(boolean isDealer) {
-        this.isDealer = isDealer;
-    }
-
-    @Override
-    public void setIsBigBlind(boolean isBigBlind) {
-        this.isBigBlind = isBigBlind;
-    }
-
-    @Override
-    public void setIsSmallBlind(boolean isSmallBlind) {
-        this.isSmallBlind = isSmallBlind;
-    }
-
-    @Override
-    public boolean getIsBigBlind() {
-        return this.isBigBlind;
-    }
-
-    @Override
-    public boolean getIsSmallBlined() {
-        return this.isSmallBlind;
-    }
-
-    @Override
-    public boolean getIsDealer() {
-        return this.isDealer;
-    }
-
-    @Override
-    public void setActionOrder(int actionOrder) {
-        this.actionOrder = actionOrder;
-    }
-
-    @Override
-    public void setAction(Action action) {
-        this.action = action;
-    }
-
-    @Override
-    public Action getAction() {
-        return action;
-    }
-
-    @Override
     public void setPlayerId(String pId) {
         this.playerId = pId;
     }
@@ -144,7 +94,7 @@ public class SimplePlayer implements Player {
     }
 
     @Override
-    public void setPlayerEmail(String pEmail) {
+    public final void setPlayerEmail(String pEmail) {
         this.playerEmail = pEmail;
     }
 
@@ -154,7 +104,7 @@ public class SimplePlayer implements Player {
     }
 
     @Override
-    public void setPlayerFirstName(String fName) {
+    public final void setPlayerFirstName(String fName) {
         this.playerFirstName = fName;
     }
 
@@ -164,7 +114,7 @@ public class SimplePlayer implements Player {
     }
 
     @Override
-    public void setPlayerLastName(String lName) {
+    public final void setPlayerLastName(String lName) {
         this.playerLastName = lName;
     }
 
@@ -174,17 +124,11 @@ public class SimplePlayer implements Player {
     }
 
     @Override
-    public int getActionOrder() {
-        return this.actionOrder;
-    }
-
-    @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 89 * hash + Objects.hashCode(this.playerFirstName);
-        hash = 89 * hash + Objects.hashCode(this.playerLastName);
-        hash = 89 * hash + Objects.hashCode(this.playerEmail);
-        hash = 89 * hash + Objects.hashCode(this.playerId);
+        int hash = 3;
+        hash = 83 * hash + Objects.hashCode(this.playerFirstName);
+        hash = 83 * hash + Objects.hashCode(this.playerLastName);
+        hash = 83 * hash + Objects.hashCode(this.playerEmail);
         return hash;
     }
 
@@ -197,21 +141,42 @@ public class SimplePlayer implements Player {
             return false;
         }
         final SimplePlayer other = (SimplePlayer) obj;
-        return Objects.equals(this.playerFirstName, other.playerFirstName)
-                && Objects.equals(this.playerLastName, other.playerLastName)
-                && Objects.equals(this.playerEmail, other.playerEmail)
-                && Objects.equals(this.playerId, other.playerId);
+        if (!Objects.equals(this.playerFirstName, other.playerFirstName)) {
+            return false;
+        }
+        if (!Objects.equals(this.playerLastName, other.playerLastName)) {
+            return false;
+        }
+        if (!Objects.equals(this.playerEmail, other.playerEmail)) {
+            return false;
+        }
+        return true;
     }
 
-    @Override
-    public boolean getIsAllIn() {
-        return isAllIn;
-    }
-
-    @Override
-    public void setIsAllIn(boolean isAllIn) {
-        this.isAllIn = isAllIn;
-    }
+//    @Override
+//    public int hashCode() {
+//        int hash = 7;
+//        hash = 89 * hash + Objects.hashCode(this.playerFirstName);
+//        hash = 89 * hash + Objects.hashCode(this.playerLastName);
+//        hash = 89 * hash + Objects.hashCode(this.playerEmail);
+//        hash = 89 * hash + Objects.hashCode(this.playerId);
+//        return hash;
+//    }
+//
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (obj == null) {
+//            return false;
+//        }
+//        if (getClass() != obj.getClass()) {
+//            return false;
+//        }
+//        final SimplePlayer other = (SimplePlayer) obj;
+//        return Objects.equals(this.playerFirstName, other.playerFirstName)
+//                && Objects.equals(this.playerLastName, other.playerLastName)
+//                && Objects.equals(this.playerEmail, other.playerEmail)
+//                && Objects.equals(this.playerId, other.playerId);
+//    }
 
     @Override
     public void setStack(int stack) {
@@ -245,4 +210,33 @@ public class SimplePlayer implements Player {
         this.holeCards.clear();
     }
 
+    @Override
+    public void addStatus(Status status) {
+        this.status.add(status);
+    }
+
+    @Override
+    public void removeStatus(Status status) {
+        this.status.remove(status);
+    }
+
+    @Override
+    public Set<Status> getStatus() {
+        return this.status;
+    }
+
+    @Override
+    public void clearStatus() {
+        this.status.clear();
+    }
+
+    private void setPid(String...pidParts){
+        HashFunction hf = Hashing.md5();
+        Hasher hasher = hf.newHasher();
+        for(String str : pidParts){
+            hasher.putString(str, Charset.forName("UTF-8"));
+        }
+        HashCode hc = hasher.hash();
+        this.setPlayerId(hc.toString());
+    }
 }

@@ -18,7 +18,6 @@ public class SimpleCard implements Card {
 
     private final Suit suit;
     private final Rank rank;
-    private boolean isBurned;
     private String cardString;
 
     public SimpleCard(Suit suit, Rank rank) {
@@ -38,20 +37,6 @@ public class SimpleCard implements Card {
     @Override
     public Rank getRank() {
         return rank;
-    }
-
-    @Override
-    public boolean isIsBurned() {
-        return isBurned;
-    }
-
-    public void setIsBurned(boolean isBurned) {
-        this.isBurned = isBurned;
-    }
-
-    @Override
-    public void reset() {
-        this.isBurned = false;
     }
 
     @Override

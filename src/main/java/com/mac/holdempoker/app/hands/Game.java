@@ -8,6 +8,7 @@ package com.mac.holdempoker.app.hands;
 import com.mac.abstractrepository.entities.holdem.GameSetting;
 import com.mac.holdempoker.app.Action;
 import com.mac.holdempoker.app.Player;
+import com.mac.holdempoker.game.impl.GameState;
 import java.time.temporal.Temporal;
 
 public interface Game {
@@ -17,6 +18,8 @@ public interface Game {
     Temporal getGameStartTime();
     
     GameSetting getGameSetting();
+    
+    GameState getGameState();
     
     void start();
     

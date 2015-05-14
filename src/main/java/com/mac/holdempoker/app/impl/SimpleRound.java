@@ -7,6 +7,7 @@ package com.mac.holdempoker.app.impl;
 
 import com.mac.holdempoker.app.Action;
 import com.mac.holdempoker.app.Board;
+import com.mac.holdempoker.app.Card;
 import com.mac.holdempoker.app.Hand;
 import com.mac.holdempoker.app.MoneyAction;
 import com.mac.holdempoker.app.PlayOrder;
@@ -14,6 +15,7 @@ import com.mac.holdempoker.app.Player;
 import com.mac.holdempoker.app.Pot;
 import com.mac.holdempoker.app.enums.ActionName;
 import com.mac.holdempoker.app.enums.RoundType;
+import com.mac.holdempoker.app.enums.Status;
 import com.mac.holdempoker.game.impl.util.RoundObservable;
 import com.mac.holdempoker.game.impl.util.RoundObserver;
 import com.mac.holdempoker.game.impl.util.WinnerContainer;
@@ -36,11 +38,18 @@ public class SimpleRound implements RoundObservable{// implements Round{
     private final List<RoundObserver> observers;
     private List<Player> players;
     private SimplePot pot;
-    private PlayOrder playOrder;
+    private final PlayOrder playOrder;
 
+    public SimpleRound() {
+        this.players = new ArrayList();
+        pot = new SimplePot();
+        observers = new ArrayList();
+        playOrder = new SimplePlayOrder();
+    }
+    
     public SimpleRound(List<Player> players) {
         this.players = new ArrayList();
-        this.players.addAll(players);
+//        this.players.addAll(players);
         pot = new SimplePot();
         observers = new ArrayList();
         playOrder = new SimplePlayOrder(this.players);
@@ -58,11 +67,10 @@ public class SimpleRound implements RoundObservable{// implements Round{
                 p.decreaseStack(ma.getAmount());
                 pot.increasePot(ma);
                 if(p.getStack() == 0){
-                    p.setIsAllIn(true);
+                    p.addStatus(Status.ALL_IN);
                 }
             }else{
-                if(action.getActionName() == ActionName.FOLD){
-                    
+                if(action.getActionName() == ActionName.FOLD){                    
                     players.remove(action.getActingPlayer());
                     if(players.size() == 1){
                         pot.singlePlayerWon(players.get(0));
@@ -73,15 +81,22 @@ public class SimpleRound implements RoundObservable{// implements Round{
         }
     }
     
-    public void reset(List<Player> players){
+    public void reset(Set<Player> players){
         this.players = new ArrayList();
         this.players.addAll(players);
+        for(Player p : this.players){
+            p.clearStatus();
+        }
         pot = new SimplePot();
-        playOrder.clear();
+        playOrder.order(this.players);        
     }
 
     public void setRound(RoundType rt) {
         pot.newRound(rt);
+    }
+    
+    public void deal(Card card){
+        playOrder.dealToNext(card);
     }
 
     public Player[] showDown(Board board) throws Exception {
