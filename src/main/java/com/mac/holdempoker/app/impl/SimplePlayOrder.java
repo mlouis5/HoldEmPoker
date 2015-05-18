@@ -137,6 +137,7 @@ public class SimplePlayOrder implements PlayOrder, Comparator<Card> {
         if (Objects.isNull(orderedPlayers)) {
             throw new NullPointerException("orderedPlayers is null");
         }
+        System.out.println("Play Order: " + playOrder);
         return playOrder = (playOrder + 1) < orderedPlayers.size() ? playOrder++ : 0;
     }
 

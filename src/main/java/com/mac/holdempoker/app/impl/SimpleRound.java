@@ -81,7 +81,7 @@ public class SimpleRound implements RoundObservable{// implements Round{
         }
     }
     
-    public void reset(Set<Player> players){
+    public void set(Set<Player> players){
         this.players = new ArrayList();
         this.players.addAll(players);
         for(Player p : this.players){

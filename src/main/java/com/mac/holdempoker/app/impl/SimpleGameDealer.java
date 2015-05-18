@@ -57,7 +57,7 @@ public class SimpleGameDealer implements GameDealer, RoundObserver {
 
     @Override
     public void dealAround() {
-        simpleRound.reset(removeEliminated());
+        simpleRound.set(removeEliminated());
         deck.buildDeck();
         deck.shuffleDeck();
         board.resetBoard();
