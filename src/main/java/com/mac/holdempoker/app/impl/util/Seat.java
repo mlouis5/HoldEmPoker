@@ -6,6 +6,10 @@
 package com.mac.holdempoker.app.impl.util;
 
 import com.mac.holdempoker.app.Player;
+import com.mac.holdempoker.app.enums.Status;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -15,12 +19,14 @@ import java.util.Objects;
 public class Seat {
 
     private Player p;
+    private List<Status> status;
 
     public Seat(Player p) {
         if (Objects.isNull(p)) {
             throw new NullPointerException("Player may not be null");
         }
         this.p = p;
+        status = new ArrayList();
     }
     
     public Player getPlayer(){
@@ -29,6 +35,20 @@ public class Seat {
     
     public boolean containsPlayer(Player p){
         return this.p.equals(p);
+    }
+    
+    public void addStatus(Status... status){
+        if(Objects.nonNull(status) && status.length > 0){
+            this.status.addAll(Arrays.asList(status));
+        }
+    }
+    
+    public List<Status> getStatus(){
+        return status;
+    }
+    
+    public boolean isEmpty(){
+        return Objects.isNull(p);
     }
 
     @Override

@@ -6,6 +6,7 @@
 package com.mac.holdempoker.app.impl.util;
 
 import com.mac.holdempoker.app.Player;
+import com.mac.holdempoker.app.enums.Status;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,42 +17,48 @@ import java.util.Objects;
 public class Table {
     
     private List<Seat> seats;
-    
-    private int numSeats;
+    private int actorIndex;
     
     public Table(){
         seats = null;
-        numSeats = 0;
     }
     
     public int getPlayerCount(){
-        return numSeats;
+        return seats.size();
     }
     
-    public void initStatus(){
-        
+    private void initStatus(){
+        if(seats.size() == 2){
+            seats.get(0).addStatus(Status.BUTTON, Status.SMALL_BLIND, Status.ACTOR);
+        }else{
+            int i,c;
+//            int 
+            for(i = 0, c = 4; i < c; i++){
+//                seat
+            }
+        }
     }
     
-    public void seatPlayers(List<Player> plyrs){
-        if(Objects.nonNull(plyrs) && !plyrs.isEmpty()){
-            plyrs.stream().forEach((p) -> {
+    public void seatPlayers(List<Player> plyrs){        
+        if(Objects.nonNull(plyrs) && !plyrs.isEmpty()){            
+            plyrs.stream().filter(p -> Objects.nonNull(p)).forEach((p) -> {
                 seatPlayer(p);
             });
+            initStatus();
         }
     }
     
     public void seatPlayer(Player p){
         if(Objects.nonNull(p)){
             seats.add(new Seat(p));
-            playerSeated();
         }
     }
     
     public Seat removePlayer(Player p){
-        return seats.remove(seats.indexOf(new Seat(p)));
-    }
-    
-    private void playerSeated(){
-        numSeats++;
+        int indexOf = seats.indexOf(new Seat(p));
+        if(indexOf >= 0){
+            return seats.remove(indexOf);
+        }
+        return new Seat(null);//returns an empty seat
     }
 }
